@@ -1,0 +1,75 @@
+/* GENERAL */
+body {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+input {
+  width: 75px;
+}
+
+button {
+  margin: 10px;
+}
+
+
+
+/* UPPER BAR */
+#input-balance,
+#input-spend {
+  display: none;
+}
+
+
+/* COMPONENTS */
+.component {
+  margin: 10px;
+  padding: 0 20px 20px;
+  display: flex;
+  flex-flow: column;
+  width: 300px;
+  background-color: coral;
+}
+
+.option-box {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-box.vertical {
+  display: block;
+  text-align: center;
+}
+
+
+/* STARTING MONEY */
+
+
+
+/* PHONE PICKER */
+/* #step2 { display: none; } */
+
+
+
+/* SUMMARY REVIEW */
+/* #step3 { display: none; } */
+
+.summary-list {
+  margin-right: 20px;
+  padding-left: 0;
+  list-style-type: none;
+  text-align: right;
+}
+
