@@ -1,51 +1,133 @@
+/* TODO
+  - css for warning messages
+  - spacing for logo/components/footer
+  - legibility for Summary page */
+
+
+
 /* GENERAL */
 body {
   display: flex;
   flex-flow: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   min-height: 100vh;
+  background: linear-gradient(90deg, rgba(244,123,74,1) 30%, rgba(233,49,130,1) 100%);
+  font-family: 'Segoe UI', 'Verdana', 'Arial', 'sans-serif';
+  color: #fff;
+  text-align: center;
 }
 
 h1,
-h2 { text-align: center; }
-
-input { width: 75px; }
-
-button { margin: 10px; }
+h2 {
+  font-family: 'Segoe UI Light', 'SegoeLight';
+}
 
 
 
-/* UPPER BAR */
-#input-balance,
-#input-spend { display: none; }
+
+/* COLORS */
+/* #f47b4a orange */
+/* #e93182 pink */
 
 
 
 /* COMPONENTS */
 .component {
   margin: 10px;
-  padding: 0 20px 20px;
+  padding: 0 15px 20px;
   display: flex;
   flex-flow: column;
   width: 300px;
-  background-color: coral;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 10px;
 }
 
 .option-box {
-  margin: 10px;
+  margin: 10px 0;
   display: flex;
   justify-content: space-between;
 }
 
 .option-box.vertical {
   display: block;
-  text-align: center;
+}
+
+input { width: 75px; }
+
+input:focus,
+select:focus {
+  outline: 3px auto #e93182;
+  border-color: #e93182;
+  box-shadow: 0 1px 8px rgba(233, 49, 130, 1);
+}
+
+
+button {
+  margin: 10px;
+  padding: 15px;
+  padding-bottom: 14px;
+  background: #e93182;
+  filter: brightness(0.95);
+  border: 3px solid #ee596f;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: all 250ms ease-in-out;
+}
+
+button:hover,
+button:focus {
+  border-color: #e93182;
+  filter: brightness(1);
+}
+
+button.next {
+  width: 125px;
+}
+
+button.next.cart {
+  width: auto;
+}
+
+button.back {
+  background: #f47b4a;
+}
+
+button.back:hover,
+button.back:focus {
+  border-color: #f47b4a;
+  filter: brightness(1);
+}
+
+
+
+/* LOGO */
+img {
+  width: 250px;
+}
+
+
+
+/* TOP BAR */
+
+.top-bar h1 {
+  margin: 10px 0;
+}
+
+.top-bar p {
+  margin: 5px 0;
+  display: none;
 }
 
 
 
 /* STEP 1 - PLANNING MONEY */
+#done-step1 {
+  align-self: flex-end;
+}
 
 
 
@@ -63,3 +145,7 @@ button { margin: 10px; }
   list-style-type: none;
   text-align: right;
 }
+
+
+
+/* FOOTER */
