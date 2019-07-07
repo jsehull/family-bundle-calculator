@@ -1,23 +1,28 @@
 // TODO list
  // 1. TODO - fix costPerBundle calculation
- // 2. create function for changing steps (active classes)?
+ // 2. create function for changing steps (active classes?)
  // 5. add css for warnings instead of alerts
+ // 6. template literal for top bar?
+  // - iso numbers for caluclation on step 3
 
 
-///
-//// STEP 1
 
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
 const step3 = document.getElementById('step3');
 
-let customerBankAccount = 0;
-let customerSpendLimit = 0;
-
-function toggleShowSteps(hide, show) {
+function toggleDisplaySteps(hide, show) {
   hide.style.display = "none";
   show.style.display = "block";
 }
+
+
+
+///
+//// STEP 1
+
+let customerBankAccount = 0;
+let customerSpendLimit = 0;
 
 function addCustomerInputsToTop() {
   document.getElementById('input-balance').style.display = "block";
@@ -25,7 +30,6 @@ function addCustomerInputsToTop() {
   document.getElementById('input-spend').style.display = "block";
   document.getElementById('input-spend').innerHTML = "Desired spend limit: $" + customerSpendLimit;
 }
-
 
 document.getElementById('done-step1').onclick = () => {
   customerBankAccount = document.getElementById("bank-account").value;
@@ -36,10 +40,9 @@ document.getElementById('done-step1').onclick = () => {
      return;
   } else {
     addCustomerInputsToTop();
-    toggleShowSteps(step1, step2);
+    toggleDisplaySteps(step1, step2);
 
-    // reset form inputs
-    document.getElementById("bank-account").value = "";
+    document.getElementById("bank-account").value = ""; // resets Planning step inputs
     document.getElementById("spend-limit").value = "";
   }
 }
@@ -49,7 +52,6 @@ document.getElementById('done-step1').onclick = () => {
 ///
 //// STEP 2
 
-// TODO change phone/accessory to empty array?
 let phoneChoice = "";
 let accessoryChoice = "";
 let bundleSize = "";
@@ -96,34 +98,29 @@ function combineDataForSummary() {
     summarySizeTag.innerHTML = "Family bundle size: " + bundleSize;
 }
 
-function moneyTotalsForSummary() {
-
-}
-
-
-// ******* ERROR with this function
-  // not getting costPerBundle accurately
-function bundlesPlusTax() {
-  // selection data is accurate
-  console.log(phoneChoice[0] + "," + phoneChoice[1] + "," + bundleSize )
-
+function getTotalSpent() {
   costPerBundle = phoneChoice[0] + accessoryChoice[0] + ((phoneChoice[0] + accessoryChoice[0]) * tax);
-  console.log('ERROR - costPerBundle -> ' + costPerBundle);
-
-
+  // *** ERROR - not getting costPerBundle accurately
+    // likely string related + floating number
   totalSpent = bundleSize * costPerBundle;
-
   totalSpent = totalSpent.toFixed(2);
-  // both console logs are messed up numbers, string related?
-  console.log('WITH fixed -> ' + totalSpent);
-
 
   return totalSpent;
 }
 
-document.getElementById('done-step2').onclick = () => {
-  console.log('click step2');
+// TODO - innerHTML for STEP 3  #summary-spend and #summary-bank
+function moneyTotalsForSummary() {
+    updatedSpendInput = document.getElementById('input-spend').innerHTML;
+    const summarySpendTag = document.getElementById('summary-spend');
 
+    // if(money spent is > budget) {
+    //   "you spent X dollars more than planned, try again to proceed"
+    // } else {
+    //   " you planned well! you have X dollars left over!"
+    // }
+}
+
+document.getElementById('done-step2').onclick = () => {
   collectPhoneData();
   collectAccessoryData();
   collectBundleData();
@@ -133,17 +130,13 @@ document.getElementById('done-step2').onclick = () => {
     return;
   } else {
     combineDataForSummary();
-
-  // ERROR **************************************************************
-    // costPerBundle math incorrect, because string and not number, or floating #??
-    // ******************************************
-    bundlesPlusTax();
+    moneyTotalsForSummary(); // TODO - considering approach
   }
-  toggleShowSteps(step2, step3);
+  toggleDisplaySteps(step2, step3);
 }
 
 document.getElementById('back-step2').onclick = () => {
-  toggleShowSteps(step2, step1);
+  toggleDisplaySteps(step2, step1);
 }
 
 
@@ -152,15 +145,5 @@ document.getElementById('back-step2').onclick = () => {
 //// STEP 3
 
 document.getElementById('back-step3').onclick = () => {
-  toggleShowSteps(step3, step2);
+  toggleDisplaySteps(step3, step2);
 }
-
-/* function remainingBankBalance() {
-  let finalSpentAndBundles = "I purchased " +  numBundles + " phone bundles for $" + totalSpent.toFixed(2) + ".";
-  let finalBankAccount = "I have $" + (customerBankAccount-totalSpent).toFixed(2) + " remaining in my bank account.";
-  // let finalSummary = [finalSpentAndBundles, finalBankAccount];
-  // alert(finalSpentAndBundles, finalBankAccount);
-
-  // return finalSummary;
-}
-// remainingBankBalance(); */

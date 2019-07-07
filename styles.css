@@ -7,29 +7,19 @@ body {
   min-height: 100vh;
 }
 
-.container {
-}
-
 h1,
-h2 {
-  text-align: center;
-}
+h2 { text-align: center; }
 
-input {
-  width: 75px;
-}
+input { width: 75px; }
 
-button {
-  margin: 10px;
-}
+button { margin: 10px; }
 
 
 
 /* UPPER BAR */
 #input-balance,
-#input-spend {
-  display: none;
-}
+#input-spend { display: none; }
+
 
 
 /* COMPONENTS */
@@ -54,17 +44,18 @@ button {
 }
 
 
-/* STARTING MONEY */
+
+/* STEP 1 - PLANNING MONEY */
 
 
 
-/* PHONE PICKER */
-/* #step2 { display: none; } */
+/* STEP 2 - BUNDLE SELECTIONS */
+#step2 { display: none; }
 
 
 
-/* SUMMARY REVIEW */
-/* #step3 { display: none; } */
+/* STEP 3 - SUMMARY SUMMARY */
+#step3 { display: none; }
 
 .summary-list {
   margin-right: 20px;
@@ -72,4 +63,3 @@ button {
   list-style-type: none;
   text-align: right;
 }
-
