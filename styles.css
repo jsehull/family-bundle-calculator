@@ -7,6 +7,7 @@
 
 /* GENERAL */
 body {
+  margin: 0;
   display: flex;
   flex-flow: column;
   justify-content: space-around;
@@ -49,9 +50,7 @@ h2 {
   justify-content: space-between;
 }
 
-.option-box.vertical {
-  display: block;
-}
+.option-box.vertical { display: block; }
 
 input { width: 75px; }
 
@@ -84,17 +83,11 @@ button:focus {
   filter: brightness(1);
 }
 
-button.next {
-  width: 125px;
-}
+button.next { width: 125px; }
 
-button.next.cart {
-  width: auto;
-}
+button.next.cart { width: auto; }
 
-button.back {
-  background: #f47b4a;
-}
+button.back { background: #f47b4a; }
 
 button.back:hover,
 button.back:focus {
@@ -105,27 +98,20 @@ button.back:focus {
 
 
 /* LOGO */
-img {
-  width: 250px;
-}
+img { width: 250px; }
 
 
 
 /* TOP BAR */
+.page-title { margin: 10px 0; }
 
-.top-bar h1 {
-  margin: 10px 0;
-}
-
-.top-bar p {
-  margin: 5px 0;
-  display: none;
-}
+.top-bar p { margin: 5px 0; }
 
 
 
 /* STEP 1 - PLANNING MONEY */
 #done-step1 {
+  /* unique NEXT button */
   align-self: flex-end;
 }
 

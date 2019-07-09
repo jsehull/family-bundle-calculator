@@ -12,12 +12,8 @@
   <img id="logo" src="horizon-logo.png" alt="Horizon Wireless">
 
   <div>
-
-    <div class="top-bar">
-      <h1>Family Bundle Calculator</h1>
-      <p id="input-balance"></p>
-      <p id="input-spend"></p>
-    </div>
+    <h1 id="page-title">Family Bundle Calculator</h1>
+    <div id="top-bar"></div>
 
     <div class="component" id="step1">
       <h2>Planning Money</h2>
@@ -77,11 +73,12 @@
     <div class="component" id="step3">
       <h2>Selection Summary</h2>
       <div class="option-box vertical">
-        <p id="summary-spend">You are UNDER/OVER your spend limit by $$ dollars.</p>
+        <p id="summary-spent"></p>
         <ul class="summary-list">
           <li id="summary-phone">Please return to the previous page and be sure to select all items</li>
           <li id="summary-accessory"></li>
           <li id="summary-size"></li>
+          <li id="summary-total-spent"></li>
         </ul>
         <p id="summary-bank">You have $$$ remaining in your account.</p>
       </div>

@@ -1,9 +1,6 @@
 // TODO list
- // 1. TODO - fix costPerBundle calculation
  // 2. create function for changing steps (active classes?)
  // 5. add css for warnings instead of alerts
- // 6. template literal for top bar?
-  // - iso numbers for caluclation on step 3
 
 
 
@@ -24,26 +21,22 @@ function toggleDisplaySteps(hide, show) {
 let customerBankAccount = 0;
 let customerSpendLimit = 0;
 
-function addCustomerInputsToTop() {
-  document.getElementById('input-balance').style.display = "block";
-  document.getElementById('input-balance').innerHTML = "Estimated bank account: $" + customerBankAccount;
-  document.getElementById('input-spend').style.display = "block";
-  document.getElementById('input-spend').innerHTML = "Desired spend limit: $" + customerSpendLimit;
+function addCustomerInputsToTopBar() {
+  document.getElementById('top-bar').innerHTML = `
+    <p id="input-balance">Estimated bank account: $${customerBankAccount}</p>
+    <p id="input-spend">Desired spend limit: $${customerSpendLimit}</p>`;
 }
 
 document.getElementById('done-step1').onclick = () => {
   customerBankAccount = document.getElementById("bank-account").value;
   customerSpendLimit = document.getElementById("spend-limit").value;
 
-  if(customerBankAccount === "" || customerSpendLimit === "") {
+  if(customerBankAccount == "" || customerSpendLimit == "") {
      alert('Please fill out both inputs');
      return;
   } else {
-    addCustomerInputsToTop();
+    addCustomerInputsToTopBar();
     toggleDisplaySteps(step1, step2);
-
-    document.getElementById("bank-account").value = ""; // resets Planning step inputs
-    document.getElementById("spend-limit").value = "";
   }
 }
 
@@ -79,45 +72,41 @@ function collectAccessoryData() {
 
 function collectBundleData() {
   bundleSize = document.getElementById("bundle-select");
-  bundleSize= bundleSize.options[bundleSize.selectedIndex].value;
+  bundleSize = parseInt(bundleSize.options[bundleSize.selectedIndex].value);
 
   return bundleSize;
 }
 
 function combineDataForSummary() {
-    const summaryPhoneTag = document.getElementById('summary-phone');
-    let phonePriceFill = phoneChoice[0];
-    let phoneNameFill = phoneChoice[1];
-    const summaryAccessoryTag = document.getElementById('summary-accessory');
-    let accessoryPriceFill = accessoryChoice[0];
-    let accessoryNameFill = accessoryChoice[1];
-    const summarySizeTag = document.getElementById('summary-size');
+  const summaryPhoneTag = document.getElementById('summary-phone');
+  let phonePriceFill = phoneChoice[0];
+  let phoneNameFill = phoneChoice[1];
+  const summaryAccessoryTag = document.getElementById('summary-accessory');
+  let accessoryPriceFill = accessoryChoice[0];
+  let accessoryNameFill = accessoryChoice[1];
+  const summarySizeTag = document.getElementById('summary-size');
 
-    summaryPhoneTag.innerHTML =  phoneNameFill + " each:  $" + phonePriceFill;
-    summaryAccessoryTag.innerHTML = accessoryNameFill + " each: $" + accessoryPriceFill;
-    summarySizeTag.innerHTML = "Family bundle size: " + bundleSize;
+
+  summaryPhoneTag.innerHTML =  phoneNameFill + " each:  $" + phonePriceFill;
+  summaryAccessoryTag.innerHTML = accessoryNameFill + " each: $" + accessoryPriceFill;
+  summarySizeTag.innerHTML = "Family bundle size: " + bundleSize;
 }
 
 function getTotalSpent() {
-  costPerBundle = phoneChoice[0] + accessoryChoice[0] + ((phoneChoice[0] + accessoryChoice[0]) * tax);
-  // *** ERROR - not getting costPerBundle accurately
-    // likely string related + floating number
+  dataPricesToNumbers();
+  costPerBundle = phonePriceFill + accessoryPriceFill + ((phonePriceFill + accessoryPriceFill) * tax);
   totalSpent = bundleSize * costPerBundle;
-  totalSpent = totalSpent.toFixed(2);
 
   return totalSpent;
 }
 
-// TODO - innerHTML for STEP 3  #summary-spend and #summary-bank
 function moneyTotalsForSummary() {
-    updatedSpendInput = document.getElementById('input-spend').innerHTML;
-    const summarySpendTag = document.getElementById('summary-spend');
+    getTotalSpent();
+    customerInputsToNumbers();
+    overUnderForSummary();
 
-    // if(money spent is > budget) {
-    //   "you spent X dollars more than planned, try again to proceed"
-    // } else {
-    //   " you planned well! you have X dollars left over!"
-    // }
+    document.getElementById('summary-total-spent').innerHTML = `Total bundle cost: $${totalSpent.toFixed(2)}`;
+    document.getElementById('summary-bank').innerHTML = `You will have $${(customerBankAccount - totalSpent).toFixed(2)} remaining in your account.`;
 }
 
 document.getElementById('done-step2').onclick = () => {
@@ -130,7 +119,7 @@ document.getElementById('done-step2').onclick = () => {
     return;
   } else {
     combineDataForSummary();
-    moneyTotalsForSummary(); // TODO - considering approach
+    moneyTotalsForSummary();
   }
   toggleDisplaySteps(step2, step3);
 }
@@ -146,4 +135,26 @@ document.getElementById('back-step2').onclick = () => {
 
 document.getElementById('back-step3').onclick = () => {
   toggleDisplaySteps(step3, step2);
+}
+
+function overUnderForSummary() {
+  summarySpendTag = document.getElementById('summary-spent');
+
+  if(totalSpent < customerSpendLimit) {
+    summarySpendTag.innerHTML = `Great job! You are UNDER your spend limit by $${(customerSpendLimit - totalSpent).toFixed(2)}!`;
+  } else if(totalSpent === customerSpendLimit) {
+    summarySpendTag.innerHTML = `Nice planning, you have spent all of the money you set aside.`;
+  } else {
+    summarySpendTag.innerHTML = `Oh noes, you are OVER the spend limit by $${(totalSpent - customerSpendLimit).toFixed(2)}!`;
+  }
+}
+
+function dataPricesToNumbers() {
+  phonePriceFill = parseInt(phoneChoice[0]);
+  accessoryPriceFill = parseInt(accessoryChoice[0]);
+}
+
+function customerInputsToNumbers() {
+  customerBankAccount = parseInt(document.getElementById("bank-account").value);
+  customerSpendLimit = parseInt(document.getElementById("spend-limit").value);
 }
