@@ -1,10 +1,6 @@
-// TODO list\
-// 2. create function for changing steps (active classes?)
-// 3. rework State
-
 // INDEX
-// - State/variables
-// - Program
+// - Variables
+// - Initialize
 // - Navigation
 // - Step 1
 // - Step 2
@@ -12,20 +8,19 @@
 
 
 
-let customerBankAccount = 0;
-let customerSpendLimit = 0;
-
-let phoneChoice = "";
-let accessoryChoice = "";
-let bundleSize = "";
-const tax = 0.08;
-let totalSpent = 0;
-let costPerBundle = 0;
-
 const step0 = document.getElementById('step0');
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
 const step3 = document.getElementById('step3');
+const tax = 0.08;
+
+let customerBankAccount = 0;
+let customerSpendLimit = 0;
+let phoneChoice = "";
+let accessoryChoice = "";
+let bundleSize = "";
+let totalSpent = 0;
+let costPerBundle = 0;
 
 
 
@@ -35,6 +30,13 @@ initialize();
 
 function initialize() {
   toggleDisplaySteps(step0, step1); //TODO - optional argument not working? had to add 2nd arg
+
+  document.getElementById('done-step0').onclick = () => { showStepOne(); }
+  document.getElementById('done-step1').onclick = () => { showStepTwo(); }
+  document.getElementById('done-step2').onclick = () => { showStepThree(); }
+
+  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(step1, step2); }
+  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(step2, step3); }
 }
 
 function showStepOne() {
@@ -44,7 +46,7 @@ function showStepOne() {
 function showStepTwo() {
   getCustomerInitialInputs();
 
-  if(customerBankAccount == "" || customerSpendLimit == "") {
+  if(customerBankAccount === "" || customerSpendLimit == "") {
      alert('Please fill out both inputs');
      return;
   } else {
@@ -58,7 +60,7 @@ function showStepThree() {
   collectAccessoryData();
   collectBundleData();
 
-  if(phoneChoice === "" || accessoryChoice === "" || bundleSize === "") {
+  if(phoneChoice[0] === "" || accessoryChoice[0] === "" || bundleSize === "") {
     alert('Please select one of each');
     return;
   } else {
@@ -68,22 +70,10 @@ function showStepThree() {
   toggleDisplaySteps(step3, step2);
 }
 
-document.getElementById('done-step0').onclick = () => { showStepOne(); }
-document.getElementById('done-step1').onclick = () => { showStepTwo(); }
-document.getElementById('done-step2').onclick = () => { showStepThree(); }
-
 
 
 ///
 //// NAVIGATION
-
-document.getElementById('back-step2').onclick = () => {
-  toggleDisplaySteps(step1, step2);
-}
-
-document.getElementById('back-step3').onclick = () => {
-  toggleDisplaySteps(step2, step3);
-}
 
 function toggleDisplaySteps(show, hide) {
   show.classList.add("active");
