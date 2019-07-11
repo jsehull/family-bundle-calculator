@@ -8,8 +8,7 @@ This project is mainly built for more vanilla JS. Design aspect is for fun. And 
 ## Horizon Wireless
 
 Horizon Wireless is the Unofficial mobile phone sponsor for all Forza Horizon events.
-
-<p align="center">
+<p>
   <img src="horizon-logo.png">
 </p>
 
