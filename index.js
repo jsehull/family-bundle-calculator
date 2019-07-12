@@ -1,12 +1,3 @@
-// INDEX
-// - Variables
-// - Initialize
-// - Navigation
-// - Step 1
-// - Step 2
-// - Step 3
-
-
 // *** each step gets its own display component for input and/or info ***
 const step0 = document.getElementById('step0');
 const step1 = document.getElementById('step1');
@@ -120,12 +111,11 @@ function dataPricesToNumbers() {
 
 function combineDataForSummary() {
   const summaryPhoneTag = document.getElementById('summary-phone');
-  [state.phonePriceFill, state.phoneNameFill] = [state.phoneChoice[0], state.phoneChoice[1]];
-  // TODO array destructuring
-  // state.phonePriceFill = state.phoneChoice[0];
-  // state.phoneNameFill =  state.phoneChoice[1];
+  state.phonePriceFill = state.phoneChoice[0];
+  state.phoneNameFill = state.phoneChoice[1];
   const summaryAccessoryTag = document.getElementById('summary-accessory');
-  [state.accessoryPriceFill, state.accessoryNameFill] = [state.accessoryChoice[0], state.accessoryChoice[1]];
+  state.accessoryPriceFill = state.accessoryChoice[0];
+  state.accessoryNameFill = state.accessoryChoice[1];
   const summarySizeTag = document.getElementById('summary-size');
 
   summaryPhoneTag.innerHTML = `
