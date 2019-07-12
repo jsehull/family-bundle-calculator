@@ -7,6 +7,7 @@
 // - Step 3
 
 
+// *** each step gets its own display component for input and/or info ***
 const step0 = document.getElementById('step0');
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
@@ -22,20 +23,15 @@ let accessoryChoice = '';
 let bundleSize = '';
 let totalSpent = 0;
 let costPerBundle = 0;
+let phonePriceFill = null;
+let phoneNameFill = null;
+let accessoryPriceFill = null;
+let accessoryNameFill = null;
 
-initialize();
 
-// *** each step gets its own display component for input and/or info ***
-
-function initialize() {
-  document.getElementById('done-step0').onclick = () => { showStepOne(); };
-  document.getElementById('done-step1').onclick = () => { showStepTwo(); };
-  document.getElementById('done-step2').onclick = () => { showStepThree(); };
-
-  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(step1, step2); };
-  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(step2, step3); };
-
-  showStepZero();
+function toggleDisplaySteps(show, hide) {
+  show.classList.add('active');
+  hide.classList.remove('active');
 }
 
 function showStepZero() {
@@ -44,6 +40,131 @@ function showStepZero() {
 
 function showStepOne() {
   toggleDisplaySteps(step1, step0);
+}
+
+// STEP 1
+
+function getCustomerInitialInputs() {
+  customerBankAccount = document.getElementById('bank-account').value;
+  customerSpendLimit = document.getElementById('spend-limit').value;
+}
+
+function addCustomerInputsToTopBar() {
+  document.getElementById('top-bar').innerHTML = `
+    <p id='input-balance'>Estimated bank account:
+      <span class='bold'>$${customerBankAccount}</span>
+    </p>
+    <p id='input-spend'>Desired spend limit:
+      <span class='bold'>$${customerSpendLimit}</span>
+    </p>
+  `;
+}
+
+// STEP 2
+
+function collectPhoneData() {
+  const phone = document.getElementById('phone-select');
+  const phoneValue = phone.options[phone.selectedIndex].value;
+  const phoneName = phone.options[phone.selectedIndex].text;
+
+  phoneChoice = [phoneValue, phoneName];
+  return phoneChoice;
+}
+
+function collectAccessoryData() {
+  const accessory = document.getElementById('accessory-select');
+  const accessoryValue = accessory.options[accessory.selectedIndex].value;
+  const accessoryName = accessory.options[accessory.selectedIndex].text;
+
+  accessoryChoice = [accessoryValue, accessoryName];
+  return accessoryChoice;
+}
+
+function collectBundleData() {
+  const bundleSelectEl = document.getElementById('bundle-select');
+  bundleSize = bundleSelectEl.options[bundleSelectEl.selectedIndex].value;
+
+  return bundleSize;
+}
+
+// STEP 3
+
+function customerInputsToNumbers() {
+  customerBankAccount = parseInt(document.getElementById('bank-account').value, 10);
+  customerSpendLimit = parseInt(document.getElementById('spend-limit').value, 10);
+}
+
+function overUnderForSummary() {
+  const summarySpendTag = document.getElementById('summary-spent');
+
+  if (totalSpent < customerSpendLimit) {
+    summarySpendTag.innerHTML = `
+      <p>Great job! You are</p>
+      <p class='under'>UNDER</p>
+      <p>your spend limit by $${(customerSpendLimit - totalSpent).toFixed(2)}!</p>
+    `;
+  } else if (totalSpent === customerSpendLimit) {
+    // TODO - need to recheck since multiple refactors...
+    summarySpendTag.innerHTML = 'Nice planning, you have spent all of the money you set aside.';
+  } else {
+    summarySpendTag.innerHTML = `
+      <p>Oh noes, you are</p>
+      <p class='over'>OVER</p>
+      <p>your spend limit by $${(totalSpent - customerSpendLimit).toFixed(2)}!</p>
+    `;
+  }
+}
+
+function dataPricesToNumbers() {
+  phonePriceFill = parseInt(phoneChoice[0], 10);
+  accessoryPriceFill = parseInt(accessoryChoice[0], 10);
+}
+
+function combineDataForSummary() {
+  const summaryPhoneTag = document.getElementById('summary-phone');
+  [phonePriceFill, phoneNameFill] = [phoneChoice[0], phoneChoice[1]];
+  const summaryAccessoryTag = document.getElementById('summary-accessory');
+  [accessoryPriceFill, accessoryNameFill] = [accessoryChoice[0], accessoryChoice[1]];
+  const summarySizeTag = document.getElementById('summary-size');
+
+  summaryPhoneTag.innerHTML = `
+    <p class='bold'>${phoneNameFill}</p>
+    <p> each: </p>
+    <p class='bold'>$${phonePriceFill}</p>
+  `;
+  summaryAccessoryTag.innerHTML = `
+    <p class='bold'>${accessoryNameFill}</p>
+    <p> each: </p>
+    <p class='bold'>$${accessoryPriceFill}</p>
+  `;
+  summarySizeTag.innerHTML = `
+    <p>Family member size: </p>
+    <p class='bold'>${bundleSize}</p>
+  `;
+}
+
+function getTotalSpent() {
+  dataPricesToNumbers();
+  costPerBundle = phonePriceFill + accessoryPriceFill
+    + ((phonePriceFill + accessoryPriceFill) * TAX);
+  totalSpent = bundleSize * costPerBundle;
+
+  return totalSpent;
+}
+
+function moneyTotalsForSummary() {
+  getTotalSpent();
+  customerInputsToNumbers();
+  overUnderForSummary();
+
+  document.getElementById('summary-total-spent').innerHTML = `
+    <p class='bold'> Total Bundle Cost: $${totalSpent.toFixed(2)}</p>
+  `;
+  document.getElementById('summary-bank').innerHTML = `
+    <p>You will have</p>
+    <p class='bold'>$${(customerBankAccount - totalSpent).toFixed(2)}</p>
+    <p>remaining.</p>
+  `;
 }
 
 function showStepTwo() {
@@ -71,135 +192,15 @@ function showStepThree() {
   }
 }
 
-// NAVIGATION
+function initialize() {
+  document.getElementById('done-step0').onclick = () => { showStepOne(); };
+  document.getElementById('done-step1').onclick = () => { showStepTwo(); };
+  document.getElementById('done-step2').onclick = () => { showStepThree(); };
 
-function toggleDisplaySteps(show, hide) {
-  show.classList.add('active');
-  hide.classList.remove('active');
+  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(step1, step2); };
+  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(step2, step3); };
+
+  showStepZero();
 }
 
-// STEP 1
-
-function getCustomerInitialInputs() {
-  customerBankAccount = document.getElementById('bank-account').value;
-  customerSpendLimit = document.getElementById('spend-limit').value;
-}
-
-function addCustomerInputsToTopBar() {
-  document.getElementById('top-bar').innerHTML = `
-    <p id='input-balance'>Estimated bank account:
-      <span class='bold'>$${customerBankAccount}</span>
-    </p>
-    <p id='input-spend'>Desired spend limit:
-      <span class='bold'>$${customerSpendLimit}</span>
-    </p>
-  `;
-}
-
-// STEP 2
-
-function collectPhoneData() {
-  phone = document.getElementById('phone-select');
-  phoneValue = phone.options[phone.selectedIndex].value;
-  phoneName = phone.options[phone.selectedIndex].text;
-
-  phoneChoice = [phoneValue, phoneName];
-  return phoneChoice;
-}
-
-function collectAccessoryData() {
-  accessory = document.getElementById('accessory-select');
-  accessoryValue = accessory.options[accessory.selectedIndex].value;
-  accessoryName = accessory.options[accessory.selectedIndex].text;
-
-  accessoryChoice = [accessoryValue, accessoryName];
-  return accessoryChoice;
-}
-
-function collectBundleData() {
-  const bundleSelectEl = document.getElementById('bundle-select');
-  bundleSize = bundleSelectEl.options[bundleSelectEl.selectedIndex].value;
-
-  return bundleSize;
-}
-
-// STEP 3
-
-function customerInputsToNumbers() {
-  customerBankAccount = parseInt(document.getElementById('bank-account').value, 10);
-  customerSpendLimit = parseInt(document.getElementById('spend-limit').value, 10);
-}
-
-function overUnderForSummary() {
-  summarySpendTag = document.getElementById('summary-spent');
-
-  if (totalSpent < customerSpendLimit) {
-    summarySpendTag.innerHTML = `
-      <p>Great job! You are</p>
-      <p class='under'>UNDER</p>
-      <p>your spend limit by $${(customerSpendLimit - totalSpent).toFixed(2)}!</p>
-    `;
-  } else if (totalSpent === customerSpendLimit) {
-    // TODO - need to recheck since multiple refactors...
-    summarySpendTag.innerHTML = 'Nice planning, you have spent all of the money you set aside.';
-  } else {
-    summarySpendTag.innerHTML = `
-      <p>Oh noes, you are</p>
-      <p class='over'>OVER</p>
-      <p>your spend limit by $${(totalSpent - customerSpendLimit).toFixed(2)}!</p>
-    `;
-  }
-}
-
-function dataPricesToNumbers() {
-  phonePriceFill = parseInt(phoneChoice[0], 10);
-  accessoryPriceFill = parseInt(accessoryChoice[0], 10);
-}
-
-function combineDataForSummary() {
-  const summaryPhoneTag = document.getElementById('summary-phone');
-  const phonePriceFill = phoneChoice[0];
-  const phoneNameFill = phoneChoice[1];
-  const summaryAccessoryTag = document.getElementById('summary-accessory');
-  const accessoryPriceFill = accessoryChoice[0];
-  const accessoryNameFill = accessoryChoice[1];
-  const summarySizeTag = document.getElementById('summary-size');
-
-  summaryPhoneTag.innerHTML = `
-    <p class='bold'>${phoneNameFill}</p>
-    <p> each: </p>
-    <p class='bold'>$${phonePriceFill}</p>
-  `;
-  summaryAccessoryTag.innerHTML = `
-    <p class='bold'>${accessoryNameFill}</p>
-    <p> each: </p>
-    <p class='bold'>$${accessoryPriceFill}</p>
-  `;
-  summarySizeTag.innerHTML = `
-    <p>Family member size: </p>
-    <p class='bold'>${bundleSize}</p>
-  `;
-}
-
-function getTotalSpent() {
-  dataPricesToNumbers();
-  costPerBundle = phonePriceFill + accessoryPriceFill + ((phonePriceFill + accessoryPriceFill) * TAX);
-  totalSpent = bundleSize * costPerBundle;
-
-  return totalSpent;
-}
-
-function moneyTotalsForSummary() {
-  getTotalSpent();
-  customerInputsToNumbers();
-  overUnderForSummary();
-
-  document.getElementById('summary-total-spent').innerHTML = `
-    <p class='bold'> Total Bundle Cost: $${totalSpent.toFixed(2)}</p>
-  `;
-  document.getElementById('summary-bank').innerHTML = `
-    <p>You will have</p>
-    <p class='bold'>$${(customerBankAccount - totalSpent).toFixed(2)}</p>
-    <p>remaining.</p>
-  `;
-}
+initialize();
