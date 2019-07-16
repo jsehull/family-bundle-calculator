@@ -23,5 +23,6 @@ module.exports = {
   rules: {
     "linebreak-style": ["error", "windows"],
     "prefer-destructuring": "off",
+    "no-use-before-define": "off",
   },
 };

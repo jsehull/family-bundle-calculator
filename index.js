@@ -1,8 +1,3 @@
-// *** each step gets its own display component for input and/or info ***
-const step0 = document.getElementById('step0');
-const step1 = document.getElementById('step1');
-const step2 = document.getElementById('step2');
-const step3 = document.getElementById('step3');
 const TAX = 0.08;
 const state = {
   customerBankAccount: 0,
@@ -10,28 +5,64 @@ const state = {
   phoneChoice: '',
   accessoryChoice: '',
   bundleSize: '',
-  totalSpent: 0,
   costPerBundle: 0,
+  totalSpent: 0,
   phonePriceFill: null,
   phoneNameFill: null,
   accessoryPriceFill: null,
   accessoryNameFill: null,
 };
 
-function toggleDisplaySteps(show, hide) {
-  show.classList.add('active');
-  hide.classList.remove('active');
+initialize();
+
+function initialize() {
+  document.getElementById('done-step0').onclick = () => { showStepOne(); };
+  document.getElementById('done-step1').onclick = () => { showStepTwo(); };
+  document.getElementById('done-step2').onclick = () => { showStepThree(); };
+
+  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(1, 2); };
+  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(2, 3); };
+
+  showStepZero();
 }
 
 function showStepZero() {
-  toggleDisplaySteps(step0, step1);
+  toggleDisplaySteps(0, 1);
 }
 
 function showStepOne() {
-  toggleDisplaySteps(step1, step0);
+  toggleDisplaySteps(1, 0);
 }
 
-// STEP 1
+function showStepTwo() {
+  getCustomerInitialInputs();
+
+  if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
+    alert('Please fill out both inputs');
+  } else {
+    addCustomerInputsToTopBar();
+    toggleDisplaySteps(2, 1);
+  }
+}
+
+function showStepThree() {
+  collectPhoneData();
+  collectAccessoryData();
+  collectBundleData();
+
+  if (state.phoneChoice[0] === '' || state.accessoryChoice[0] === '' || state.bundleSize === '') {
+    alert('Please select one of each');
+  } else {
+    combineDataForSummary();
+    moneyTotalsForSummary();
+    toggleDisplaySteps(3, 2);
+  }
+}
+
+function toggleDisplaySteps(showStepNum, hideStepNum) {
+  document.getElementById(`step${showStepNum}`).classList.add('active');
+  document.getElementById(`step${hideStepNum}`).classList.remove('active');
+}
 
 function getCustomerInitialInputs() {
   state.customerBankAccount = document.getElementById('bank-account').value;
@@ -48,8 +79,6 @@ function addCustomerInputsToTopBar() {
     </p>
   `;
 }
-
-// STEP 2
 
 function collectPhoneData() {
   const phone = document.getElementById('phone-select');
@@ -75,8 +104,6 @@ function collectBundleData() {
 
   return state.bundleSize;
 }
-
-// STEP 3
 
 function customerInputsToNumbers() {
   state.customerBankAccount = parseInt(document.getElementById('bank-account').value, 10);
@@ -157,41 +184,3 @@ function moneyTotalsForSummary() {
     <p>remaining.</p>
   `;
 }
-
-function showStepTwo() {
-  getCustomerInitialInputs();
-
-  if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
-    alert('Please fill out both inputs');
-  } else {
-    addCustomerInputsToTopBar();
-    toggleDisplaySteps(step2, step1);
-  }
-}
-
-function showStepThree() {
-  collectPhoneData();
-  collectAccessoryData();
-  collectBundleData();
-
-  if (state.phoneChoice[0] === '' || state.accessoryChoice[0] === '' || state.bundleSize === '') {
-    alert('Please select one of each');
-  } else {
-    combineDataForSummary();
-    moneyTotalsForSummary();
-    toggleDisplaySteps(step3, step2);
-  }
-}
-
-function initialize() {
-  document.getElementById('done-step0').onclick = () => { showStepOne(); };
-  document.getElementById('done-step1').onclick = () => { showStepTwo(); };
-  document.getElementById('done-step2').onclick = () => { showStepThree(); };
-
-  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(step1, step2); };
-  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(step2, step3); };
-
-  showStepZero();
-}
-
-initialize();

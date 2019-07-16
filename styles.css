@@ -80,12 +80,11 @@ h2::after {
   justify-content: space-between;
 }
 
-.option-box p { margin: 0; }
-
 .option-box.vertical { display: block; }
 
-.option-box.button { margin: 0; }
+.option-box p { margin: 0; }
 
+.option-box.button { margin: 0; }
 
 input {
   width: 70px;
@@ -132,9 +131,7 @@ button.back:focus {
   filter: brightness(1);
 }
 
-.bold {
-  font-weight: bold;
-}
+.bold { font-weight: bold; }
 
 
 
