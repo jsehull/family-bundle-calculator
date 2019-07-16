@@ -6,9 +6,9 @@
 - LOGO
 - TOP-BAR
 - STEPS
-- STEP 1
 - STEP 2
 - STEP 3
+- STEP 4
 - FOOTER
 */
 
@@ -154,30 +154,30 @@ img {
 
 /* STEPS */
 
-#step0,
 #step1,
 #step2,
-#step3 { display: none; }
+#step3,
+#step4 { display: none; }
 
-#step0.active,
 #step1.active,
 #step2.active,
-#step3.active { display: flex; }
+#step3.active,
+#step4.active { display: flex; }
 
 
 
-/* STEP 1 - PLANNING MONEY */
-#done-step1 {
+/* STEP 2 - PLANNING MONEY */
+#done-step2 {
   /* unique NEXT button */
   align-self: flex-end;
 }
 
 
-/* STEP 2 - BUNDLE SELECTIONS */
+/* STEP 3 - BUNDLE SELECTIONS */
 
 
 
-/* STEP 3 - SUMMARY SUMMARY */
+/* STEP 4 - SUMMARY SUMMARY */
 #summary-spent p,
 .summary-list p,
 #summary-bank p {

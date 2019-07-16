@@ -15,53 +15,63 @@ const state = {
 
 initialize();
 
+// function doneWithStepEl(stepNum) {
+//   document.getElementById(`done-step${stepNum}`);
+// }
+
 function initialize() {
-  document.getElementById('done-step0').onclick = () => { showStepOne(); };
-  document.getElementById('done-step1').onclick = () => { showStepTwo(); };
-  document.getElementById('done-step2').onclick = () => { showStepThree(); };
+  // TODO - undefined, will need alternative setup
+  // doneWithStepEl(1).onclick = () => { showStep(2); };
+  document.getElementById('done-step1').onclick = () => { showStep(2); };
+  document.getElementById('done-step2').onclick = () => { showStep(3); };
+  document.getElementById('done-step3').onclick = () => { showStep(4); };
 
-  document.getElementById('back-step2').onclick = () => { toggleDisplaySteps(1, 2); };
-  document.getElementById('back-step3').onclick = () => { toggleDisplaySteps(2, 3); };
+  document.getElementById('back-step3').onclick = () => { goToPreviousStep(3); };
+  document.getElementById('back-step4').onclick = () => { goToPreviousStep(4); };
 
-  showStepZero();
+  showStep(1);
 }
 
-function showStepZero() {
-  toggleDisplaySteps(0, 1);
-}
+function showStep(stepNum) {
+  if (stepNum === 1 || stepNum === 2) {
+    toggleDisplaySteps(stepNum, (stepNum - 1));
+  } else if (stepNum === 3) {
+    getCustomerInitialInputs();
 
-function showStepOne() {
-  toggleDisplaySteps(1, 0);
-}
+    if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
+      alert('Please fill out both inputs');
+    } else {
+      addCustomerInputsToTopBar();
+      toggleDisplaySteps(stepNum, (stepNum - 1));
+    }
+  } else if (stepNum === 4) {
+    // TODO - set state to collect data
+    collectPhoneData();
+    collectAccessoryData();
+    collectBundleData();
 
-function showStepTwo() {
-  getCustomerInitialInputs();
-
-  if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
-    alert('Please fill out both inputs');
-  } else {
-    addCustomerInputsToTopBar();
-    toggleDisplaySteps(2, 1);
-  }
-}
-
-function showStepThree() {
-  collectPhoneData();
-  collectAccessoryData();
-  collectBundleData();
-
-  if (state.phoneChoice[0] === '' || state.accessoryChoice[0] === '' || state.bundleSize === '') {
-    alert('Please select one of each');
-  } else {
-    combineDataForSummary();
-    moneyTotalsForSummary();
-    toggleDisplaySteps(3, 2);
+    if (state.phoneChoice[0] === '' || state.accessoryChoice[0] === '' || state.bundleSize === '') {
+      alert('Please select one of each');
+    } else {
+      combineDataForSummary();
+      moneyTotalsForSummary();
+      toggleDisplaySteps(stepNum, (stepNum - 1));
+    }
   }
 }
 
 function toggleDisplaySteps(showStepNum, hideStepNum) {
+  if (hideStepNum === 0) {
+    document.getElementById(`step${showStepNum}`).classList.add('active');
+
+    return;
+  }
   document.getElementById(`step${showStepNum}`).classList.add('active');
   document.getElementById(`step${hideStepNum}`).classList.remove('active');
+}
+
+function goToPreviousStep(currentStep) {
+  toggleDisplaySteps((currentStep - 1), currentStep);
 }
 
 function getCustomerInitialInputs() {
@@ -120,7 +130,7 @@ function overUnderForSummary() {
       <p>your spend limit by $${(state.customerSpendLimit - state.totalSpent).toFixed(2)}!</p>
     `;
   } else if (state.totalSpent === state.customerSpendLimit) {
-    // TODO - need to recheck since multiple refactors...
+    // TODO - need to recheck validation since multiple refactors...
     summarySpendTag.innerHTML = 'Nice planning, you have spent all of the money you set aside.';
   } else {
     summarySpendTag.innerHTML = `
