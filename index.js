@@ -5,23 +5,12 @@ const state = {
   phoneChoice: '',
   accessoryChoice: '',
   bundleSize: '',
-  costPerBundle: 0,
   totalSpent: 0,
-  phonePriceFill: null,
-  phoneNameFill: null,
-  accessoryPriceFill: null,
-  accessoryNameFill: null,
 };
 
 initialize();
 
-// function doneWithStepEl(stepNum) {
-//   document.getElementById(`done-step${stepNum}`);
-// }
-
 function initialize() {
-  // TODO - undefined, will need alternative setup
-  // doneWithStepEl(1).onclick = () => { showStep(2); };
   document.getElementById('done-step1').onclick = () => { showStep(2); };
   document.getElementById('done-step2').onclick = () => { showStep(3); };
   document.getElementById('done-step3').onclick = () => { showStep(4); };
@@ -36,21 +25,16 @@ function showStep(stepNum) {
   if (stepNum === 1 || stepNum === 2) {
     toggleDisplaySteps(stepNum, (stepNum - 1));
   } else if (stepNum === 3) {
-    getCustomerInitialInputs();
-
     if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
+      // TODO - if '' or NaN (has issue if selected then changed back to default = NaN ')')
       alert('Please fill out both inputs');
     } else {
       addCustomerInputsToTopBar();
       toggleDisplaySteps(stepNum, (stepNum - 1));
     }
   } else if (stepNum === 4) {
-    // TODO - set state to collect data
-    collectPhoneData();
-    collectAccessoryData();
-    collectBundleData();
-
     if (state.phoneChoice[0] === '' || state.accessoryChoice[0] === '' || state.bundleSize === '') {
+      // TODO - if '' or NaN (has issue if selected then changed back to default = NaN ')')
       alert('Please select one of each');
     } else {
       combineDataForSummary();
@@ -73,11 +57,36 @@ function toggleDisplaySteps(showStepNum, hideStepNum) {
 function goToPreviousStep(currentStep) {
   toggleDisplaySteps((currentStep - 1), currentStep);
 }
+// TODO  where to store event listeners?
+document.getElementById('bank-account').addEventListener('change', () => {
+  state.customerBankAccount = parseInt(document.getElementById('bank-account').value, 10);
+});
 
-function getCustomerInitialInputs() {
-  state.customerBankAccount = document.getElementById('bank-account').value;
-  state.customerSpendLimit = document.getElementById('spend-limit').value;
-}
+document.getElementById('spend-limit').addEventListener('change', () => {
+  state.customerSpendLimit = parseInt(document.getElementById('spend-limit').value, 10);
+});
+
+// TODO - group grab elements?
+document.getElementById('phone-select').addEventListener('change', () => {
+  const phone = document.getElementById('phone-select');
+  const phoneValue = parseInt(phone.options[phone.selectedIndex].value, 10);
+  const phoneName = phone.options[phone.selectedIndex].text;
+
+  state.phoneChoice = [phoneValue, phoneName];
+});
+
+document.getElementById('accessory-select').addEventListener('change', () => {
+  const accessory = document.getElementById('accessory-select');
+  const accessoryValue = parseInt(accessory.options[accessory.selectedIndex].value, 10);
+  const accessoryName = accessory.options[accessory.selectedIndex].text;
+
+  state.accessoryChoice = [accessoryValue, accessoryName];
+});
+
+document.getElementById('bundle-select').addEventListener('change', () => {
+  const bundleSelectEl = document.getElementById('bundle-select');
+  state.bundleSize = parseInt(bundleSelectEl.options[bundleSelectEl.selectedIndex].value, 10);
+});
 
 function addCustomerInputsToTopBar() {
   document.getElementById('top-bar').innerHTML = `
@@ -88,36 +97,6 @@ function addCustomerInputsToTopBar() {
       <span class='bold'>$${state.customerSpendLimit}</span>
     </p>
   `;
-}
-
-function collectPhoneData() {
-  const phone = document.getElementById('phone-select');
-  const phoneValue = phone.options[phone.selectedIndex].value;
-  const phoneName = phone.options[phone.selectedIndex].text;
-
-  state.phoneChoice = [phoneValue, phoneName];
-  return state.phoneChoice;
-}
-
-function collectAccessoryData() {
-  const accessory = document.getElementById('accessory-select');
-  const accessoryValue = accessory.options[accessory.selectedIndex].value;
-  const accessoryName = accessory.options[accessory.selectedIndex].text;
-
-  state.accessoryChoice = [accessoryValue, accessoryName];
-  return state.accessoryChoice;
-}
-
-function collectBundleData() {
-  const bundleSelectEl = document.getElementById('bundle-select');
-  state.bundleSize = bundleSelectEl.options[bundleSelectEl.selectedIndex].value;
-
-  return state.bundleSize;
-}
-
-function customerInputsToNumbers() {
-  state.customerBankAccount = parseInt(document.getElementById('bank-account').value, 10);
-  state.customerSpendLimit = parseInt(document.getElementById('spend-limit').value, 10);
 }
 
 function overUnderForSummary() {
@@ -141,29 +120,20 @@ function overUnderForSummary() {
   }
 }
 
-function dataPricesToNumbers() {
-  state.phonePriceFill = parseInt(state.phoneChoice[0], 10);
-  state.accessoryPriceFill = parseInt(state.accessoryChoice[0], 10);
-}
-
 function combineDataForSummary() {
   const summaryPhoneTag = document.getElementById('summary-phone');
-  state.phonePriceFill = state.phoneChoice[0];
-  state.phoneNameFill = state.phoneChoice[1];
   const summaryAccessoryTag = document.getElementById('summary-accessory');
-  state.accessoryPriceFill = state.accessoryChoice[0];
-  state.accessoryNameFill = state.accessoryChoice[1];
   const summarySizeTag = document.getElementById('summary-size');
 
   summaryPhoneTag.innerHTML = `
-    <p class='bold'>${state.phoneNameFill}</p>
+    <p class='bold'>${state.phoneChoice[1]}</p>
     <p> each: </p>
-    <p class='bold'>$${state.phonePriceFill}</p>
+    <p class='bold'>$${state.phoneChoice[0]}</p>
   `;
   summaryAccessoryTag.innerHTML = `
-    <p class='bold'>${state.accessoryNameFill}</p>
+    <p class='bold'>${state.accessoryChoice[1]}</p>
     <p> each: </p>
-    <p class='bold'>$${state.accessoryPriceFill}</p>
+    <p class='bold'>$${state.accessoryChoice[0]}</p>
   `;
   summarySizeTag.innerHTML = `
     <p>Family member size: </p>
@@ -172,17 +142,14 @@ function combineDataForSummary() {
 }
 
 function getTotalSpent() {
-  dataPricesToNumbers();
-  state.costPerBundle = state.phonePriceFill + state.accessoryPriceFill
-    + ((state.phonePriceFill + state.accessoryPriceFill) * TAX);
-  state.totalSpent = state.bundleSize * state.costPerBundle;
-
-  return state.totalSpent;
+  // TODO - worth creating variables for function legibility?
+  const costPerBundle = state.phoneChoice[0] + state.accessoryChoice[0]
+    + ((state.phoneChoice[0] + state.accessoryChoice[0]) * TAX);
+  state.totalSpent = state.bundleSize * costPerBundle;
 }
 
 function moneyTotalsForSummary() {
   getTotalSpent();
-  customerInputsToNumbers();
   overUnderForSummary();
 
   document.getElementById('summary-total-spent').innerHTML = `
