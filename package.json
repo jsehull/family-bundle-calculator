@@ -1,0 +1,26 @@
+{
+  "name": "family-bundle-calculator",
+  "version": "1.0.0",
+  "description": "I began to test out some React lately and wanted to polish up on some vanilla JavaScript first.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsehull/family-bundle-calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsehull/family-bundle-calculator/issues"
+  },
+  "homepage": "https://github.com/jsehull/family-bundle-calculator#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2"
+  }
+}

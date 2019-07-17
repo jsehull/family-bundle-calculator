@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Family Bundle Calculator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <img id="logo" src="horizon-logo.png" alt="Horizon Wireless">
+
+  <div>
+    <h1 id="page-title">Family Bundle Calculator</h1>
+    <div id="top-bar"></div>
+
+    <div class="component" id="step1">
+      <h2>Summer Sale Blowout</h2>
+      <div class="option-box">
+        <p>Bulk-buy phones and accessories to save money for the whole family!</p>
+      </div>
+
+      <button id="done-step1">Begin</button>
+    </div>
+
+    <div class="component" id="step2">
+      <h2>Planning Money</h2>
+      <div class="option-box">
+        <label for="bank-account">Estimate savings available:</label>
+        <input id="bank-account" type="number">
+      </div>
+      <div class="option-box">
+        <label for="spend-limit">Enter desired spend limit:</label>
+        <input id="spend-limit" type="number">
+      </div>
+
+      <button id="done-step2" class="next">Next</button>
+    </div>
+
+    <div class="component" id="step3">
+      <h2>Bundle Selections</h2>
+      <div class="option-box vertical">
+        <label for="phone-select">Choose your phone bundle: </label>
+        <select id="phone-select">
+            <option value="">-Select a phones-</option>
+            <option value="250">iPhone6s</option>
+            <option value="450">iPhone7</option>
+            <option value="600">iPhone8</option>
+            <option value="750">iPhone Xr</option>
+            <option value="900">Samsung S10</option>
+            <option value="1700">Samsung S10+</option>
+            <option value="5">Nokia 3310</option>
+        </select>
+      </div>
+      <div class="option-box vertical">
+        <label for="accessory-select">Choose your headphone bundle:</label>
+        <select id="accessory-select">
+            <option value="">-Select your accessories</option>
+            <option value="30">Earbuds</option>
+            <option value="200">iPhone Earpods</option>
+            <option value="3">Walkman headphones</option>
+        </select>
+      </div>
+      <div class="option-box vertical">
+        <label for="bundle-select">Choose number of family members:</label>
+        <select id="bundle-select">
+            <option value="">-Family Size-</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Five</option>
+            <option value="6">Six</option>
+        </select>
+      </div>
+      <div class="option-box button">
+        <button id="back-step3" class="back">Back</button>
+        <button id="done-step3" class="next">Next</button>
+      </div>
+    </div>
+
+    <div class="component" id="step4">
+      <h2>Selection Summary</h2>
+      <div class="option-box vertical">
+        <p id="summary-spent">Please return to the previous page and be sure to select all items</p>
+        <ul class="summary-list">
+          <li id="summary-phone"></li>
+          <li id="summary-accessory"></li>
+          <li id="summary-size"></li>
+          <li id="summary-total-spent"></li>
+        </ul>
+        <p id="summary-bank"></p>
+      </div>
+      <div class="option-box button">
+        <button id="back-step4" class="back">Back</button>
+        <button id="done-step4" class="next cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer">Unofficial sponsor for &copy;Forza Horizon.</p>
+
+  <script src="index.js"></script>
+</body>
+</html>

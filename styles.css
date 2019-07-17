@@ -1,0 +1,224 @@
+/*
+*** INDEX ***
+- GENERAL
+- COLORS
+- COMPONENTS
+- LOGO
+- TOP-BAR
+- STEPS
+- STEP 2
+- STEP 3
+- STEP 4
+- FOOTER
+*/
+
+
+
+/* GENERAL */
+body {
+  margin: 0;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(90deg, #f47b4a 30%, #e93182 100%);
+  font-family: 'Segoe UI', 'Verdana', 'Arial', 'sans-serif';
+  color: #fff;
+  text-align: center;
+}
+
+h1,
+h2 {
+  font-family: 'Segoe UI Light', 'SegoeLight';
+}
+
+h1 { margin: 0 0 10px; }
+
+h2 {
+  margin: 0;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+h2::after {
+  content: "";
+  margin: 0 auto;
+  width: auto;
+  height: 3px;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  background: -webkit-gradient(linear,left top,right top,from(#f47b4a),to(#e93182));
+  background: linear-gradient(to right, #f47b4a, #e93182);
+}
+
+
+
+/* COLORS */
+/* #f47b4a orange */
+/* #e93182 pink */
+
+
+
+/* COMPONENTS */
+
+.component {
+  margin: 10px;
+  padding: 20px 15px;
+  display: flex;
+  flex-flow: column;
+  max-width: 300px;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 10px;
+}
+
+.option-box {
+  margin: 0 0 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-box.vertical { display: block; }
+
+.option-box p { margin: 0; }
+
+.option-box.button { margin: 0; }
+
+input {
+  width: 70px;
+  padding: 3px;
+ }
+
+input:focus,
+select:focus {
+  outline: 3px auto #e93182;
+  border-color: #e93182;
+  box-shadow: 0 1px 8px rgba(233, 49, 130, 1);
+}
+
+
+button {
+  margin: 10px;
+  padding: 15px;
+  padding-bottom: 14px;
+  background: #e93182;
+  filter: brightness(0.95);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+button:hover,
+button:focus {
+  border-color: #e93182;
+  filter: brightness(1);
+}
+
+button.next { width: 125px; }
+
+button.next.cart { width: auto; }
+
+button.back { background: #f47b4a; }
+
+button.back:hover,
+button.back:focus {
+  border-color: #f47b4a;
+  filter: brightness(1);
+}
+
+.bold { font-weight: bold; }
+
+
+
+/* LOGO */
+img {
+  margin-top: 25px;
+  width: 250px;
+}
+
+
+
+/* TOP BAR */
+.page-title { margin: 10px 0; }
+
+#top-bar { margin-bottom: 20px; }
+
+#top-bar p { margin: 0; }
+
+
+
+/* STEPS */
+
+#step1,
+#step2,
+#step3,
+#step4 { display: none; }
+
+#step1.active,
+#step2.active,
+#step3.active,
+#step4.active { display: flex; }
+
+
+
+/* STEP 2 - PLANNING MONEY */
+#done-step2 {
+  /* unique NEXT button */
+  align-self: flex-end;
+}
+
+
+/* STEP 3 - BUNDLE SELECTIONS */
+
+
+
+/* STEP 4 - SUMMARY SUMMARY */
+#summary-spent p,
+.summary-list p,
+#summary-bank p {
+  margin: 0;
+  display: inline-block;
+}
+
+#summary-spent { margin: 0; }
+
+.over,
+.under {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.over { color: red; }
+
+.under { color: lime; }
+
+.summary-list {
+  padding: 0 10% 0;
+  list-style-type: none;
+  text-align: right;
+}
+
+#summary-total-spent {
+  margin-top: 13px;
+  position: relative;
+}
+
+#summary-total-spent::before {
+  content: "";
+  height: 3px;
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to right, #f47b4a, #e93182);
+}
+
+
+
+/* FOOTER */
+.footer { margin: 10px 0; }
