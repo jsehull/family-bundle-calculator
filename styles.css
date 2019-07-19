@@ -146,9 +146,17 @@ img {
 /* TOP BAR */
 .page-title { margin: 10px 0; }
 
-#top-bar { margin-bottom: 20px; }
+#top-bar {
+  margin-bottom: 20px;
+  display: none;
+}
+
+#top-bar.active {
+  display: block;
+}
 
 #top-bar p { margin: 0; }
+
 
 
 
@@ -177,7 +185,7 @@ img {
 
 
 
-/* STEP 4 - SUMMARY SUMMARY */
+/* STEP 4 - SELECTION SUMMARY */
 #summary-spent p,
 .summary-list p,
 #summary-bank p {
@@ -186,6 +194,18 @@ img {
 }
 
 #summary-spent { margin: 0; }
+
+#feedback-under,
+#feedback-over,
+#feedback-even {
+  display: none;
+}
+
+#feedback-under.active,
+#feedback-over.active,
+#feedback-even.active {
+  display: block;
+}
 
 .over,
 .under {
@@ -203,12 +223,12 @@ img {
   text-align: right;
 }
 
-#summary-total-spent {
+#summary-spent-bar {
   margin-top: 13px;
   position: relative;
 }
 
-#summary-total-spent::before {
+#summary-spent-bar::before {
   content: "";
   height: 3px;
   position: absolute;

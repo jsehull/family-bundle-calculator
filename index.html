@@ -13,7 +13,10 @@
 
   <div>
     <h1 id="page-title">Family Bundle Calculator</h1>
-    <div id="top-bar"></div>
+    <div id="top-bar">
+      <p>Estimated bank account: $<span id='input-balance'></span></p>
+      <p>Desired spend limit: $<span id='input-spend'></span></p>
+    </div>
 
     <div class="component" id="step1">
       <h2>Summer Sale Blowout</h2>
@@ -43,7 +46,7 @@
       <div class="option-box vertical">
         <label for="phone-select">Choose your phone bundle: </label>
         <select id="phone-select">
-            <option value="">-Select a phones-</option>
+            <option value="0">-Select a phones-</option>
             <option value="250">iPhone6s</option>
             <option value="450">iPhone7</option>
             <option value="600">iPhone8</option>
@@ -56,7 +59,7 @@
       <div class="option-box vertical">
         <label for="accessory-select">Choose your headphone bundle:</label>
         <select id="accessory-select">
-            <option value="">-Select your accessories</option>
+            <option value="0">-Select your accessories</option>
             <option value="30">Earbuds</option>
             <option value="200">iPhone Earpods</option>
             <option value="3">Walkman headphones</option>
@@ -65,7 +68,7 @@
       <div class="option-box vertical">
         <label for="bundle-select">Choose number of family members:</label>
         <select id="bundle-select">
-            <option value="">-Family Size-</option>
+            <option value="0">-Family Size-</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
             <option value="4">Four</option>
@@ -82,14 +85,29 @@
     <div class="component" id="step4">
       <h2>Selection Summary</h2>
       <div class="option-box vertical">
-        <p id="summary-spent">Please return to the previous page and be sure to select all items</p>
+        <p id="summary-spent"></p>
+
         <ul class="summary-list">
-          <li id="summary-phone"></li>
-          <li id="summary-accessory"></li>
-          <li id="summary-size"></li>
-          <li id="summary-total-spent"></li>
+          <li id="summary-phone">
+            <span id="phone-name" class='bold'></span>
+             each:
+            <span id="phone-price" class='bold'></span>
+          </li>
+          <li id="summary-accessory">
+            <span id="accessory-name" class='bold'></span>
+              each:
+            <span id="accessory-price" class='bold'></span>
+          </li>
+          <li>
+            Family member size:
+            <span id="bundle-size" class="bold"></span>
+          </li>
+          <li id="summary-spent-bar">
+            Total Bundle Cost:
+            <span id="summary-total-spent" class="bold"></span>
+          </li>
         </ul>
-        <p id="summary-bank"></p>
+        <p>You will have <span id="summary-bank" class="bold"></span> remaining.</p>
       </div>
       <div class="option-box button">
         <button id="back-step4" class="back">Back</button>
