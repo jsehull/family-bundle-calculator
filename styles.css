@@ -186,6 +186,16 @@ img {
 
 
 /* STEP 4 - SELECTION SUMMARY */
+#summary-spent-under,
+#summary-spent-over {
+  display: none;
+}
+
+#summary-spent-under.active,
+#summary-spent-over.active {
+  display: block;
+}
+
 #summary-spent p,
 .summary-list p,
 #summary-bank p {

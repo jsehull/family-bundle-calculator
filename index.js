@@ -2,11 +2,11 @@ const TAX = 0.08;
 const state = {
   customerBankAccount: 0,
   customerSpendLimit: 0,
-  phoneName: '',
-  phonePrice: '',
-  accessoryName: '',
-  accessoryPrice: '',
-  bundleSize: '',
+  phoneName: null,
+  phonePrice: 0,
+  accessoryName: null,
+  accessoryPrice: 0,
+  bundleSize: 0,
   totalSpent: 0,
 };
 
@@ -27,16 +27,16 @@ function goToStep(stepNum) {
   if (stepNum === 1 || stepNum === 2) {
     toggleDisplaySteps(stepNum, (stepNum - 1));
   } else if (stepNum === 3) {
-    // TODO - set validation for 0 or NaN
-    if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
+    if (state.customerBankAccount === 0 || state.customerSpendLimit === 0 ||
+      isNaN(state.customerBankAccount) || isNaN(state.customerSpendLimit))
+    {
       alert('Please fill out both inputs');
     } else {
       document.getElementById('top-bar').classList.add('active');
       toggleDisplaySteps(stepNum, (stepNum - 1));
     }
   } else if (stepNum === 4) {
-    if (state.phonePrice === '' || state.accessoryPrice === '' || state.bundleSize === '') {
-      // TODO - if '' or NaN (has issue if changed back to default ')')
+    if (state.phonePrice === 0 || state.accessoryPrice === 0 || state.bundleSize === 0) {
       alert('Please select one of each');
     } else {
       overUnderForSummary();
@@ -122,23 +122,18 @@ function showTotalSpentAndRemaining() {
   document.getElementById('summary-bank').innerHTML = `$${(state.customerBankAccount - state.totalSpent).toFixed(2)}`;
 }
 
-// TODO - still need, but move to HTML too
 function overUnderForSummary() {
-  const summarySpendTag = document.getElementById('summary-spent');
-  if (state.totalSpent < state.customerSpendLimit) {
-    summarySpendTag.innerHTML = `
-      <p>Great job! You are</p>
-      <p class='under'>UNDER</p>
-      <p>your spend limit by $${(state.customerSpendLimit - state.totalSpent).toFixed(2)}!</p>
-    `;
-  } else if (state.totalSpent === state.customerSpendLimit) {
-    // TODO - need to recheck validation since multiple refactors...
-    summarySpendTag.innerHTML = 'Nice planning, you have spent all of the money you set aside.';
-  } else {
-    summarySpendTag.innerHTML = `
-      <p>Oh noes, you are</p>
-      <p class='over'>OVER</p>
-      <p>your spend limit by $${(state.totalSpent - state.customerSpendLimit).toFixed(2)}!</p>
-    `;
+  const summaryUnderEl = document.getElementById('summary-spent-under');
+  const summaryOverEl = document.getElementById('summary-spent-over');
+  const summaryNumberEl = document.getElementById('summary-spent-number');
+
+  if (state.totalSpent <= state.customerSpendLimit) {
+    summaryOverEl.classList.remove('active');
+    summaryUnderEl.classList.add('active');
+    summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
+  } else if (state.totalSpent > state.customerSpendLimit) {
+    summaryUnderEl.classList.remove('active');
+    summaryOverEl.classList.add('active');
+    summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
   }
 }
