@@ -1,3 +1,4 @@
+// TODO  put "current step" in state
 const TAX = 0.08;
 const state = {
   customerBankAccount: 0,
@@ -26,21 +27,28 @@ function initialize() {
 function goToStep(stepNum) {
   if (stepNum === 1 || stepNum === 2) {
     toggleDisplaySteps(stepNum, (stepNum - 1));
-  } else if (stepNum === 3) {
+  } else {
+    validateStep(stepNum) && toggleDisplaySteps(stepNum, (stepNum - 1));
+  }
+}
+
+function validateStep(stepNum) {
+  if (stepNum === 3) {
     if (state.customerBankAccount === 0 || state.customerSpendLimit === 0 ||
       isNaN(state.customerBankAccount) || isNaN(state.customerSpendLimit))
     {
       alert('Please fill out both inputs');
     } else {
       document.getElementById('top-bar').classList.add('active');
-      toggleDisplaySteps(stepNum, (stepNum - 1));
+      return true;
     }
-  } else if (stepNum === 4) {
+  }
+  if (stepNum === 4) {
     if (state.phonePrice === 0 || state.accessoryPrice === 0 || state.bundleSize === 0) {
       alert('Please select one of each');
     } else {
       overUnderForSummary();
-      toggleDisplaySteps(stepNum, (stepNum - 1));
+      return true;
     }
   }
 }
@@ -52,12 +60,10 @@ function doneWithStepEl(stepNum) {
 function toggleDisplaySteps(showStepNum, hideStepNum) {
   if (hideStepNum === 0) {
     document.getElementById(`step${showStepNum}`).classList.add('active');
-
-    return;
+  } else {
+    document.getElementById(`step${showStepNum}`).classList.add('active');
+    document.getElementById(`step${hideStepNum}`).classList.remove('active');
   }
-
-  document.getElementById(`step${showStepNum}`).classList.add('active');
-  document.getElementById(`step${hideStepNum}`).classList.remove('active');
 }
 
 function goToPreviousStep(currentStep) {
@@ -118,8 +124,10 @@ function showTotalSpentAndRemaining() {
     + ((state.phonePrice + state.accessoryPrice) * TAX);
   state.totalSpent = state.bundleSize * costPerBundle;
 
-  document.getElementById('summary-total-spent').innerHTML = `$${state.totalSpent.toFixed(2)}`;
-  document.getElementById('summary-bank').innerHTML = `$${(state.customerBankAccount - state.totalSpent).toFixed(2)}`;
+  document.getElementById('summary-total-spent').innerHTML =
+    `$${state.totalSpent.toFixed(2)}`;
+  document.getElementById('summary-bank').innerHTML =
+    `$${(state.customerBankAccount - state.totalSpent).toFixed(2)}`;
 }
 
 function overUnderForSummary() {
@@ -137,3 +145,4 @@ function overUnderForSummary() {
     summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
   }
 }
+
