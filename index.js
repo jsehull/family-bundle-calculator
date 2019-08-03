@@ -1,6 +1,6 @@
-// TODO  put "current step" in state
 const TAX = 0.08;
 const state = {
+  stepNumber: 0,
   customerBankAccount: 0,
   customerSpendLimit: 0,
   phoneName: null,
@@ -14,26 +14,29 @@ const state = {
 initialize();
 
 function initialize() {
-  doneWithStepEl(1).onclick = () => { goToStep(2); };
-  doneWithStepEl(2).onclick = () => { goToStep(3); };
-  doneWithStepEl(3).onclick = () => { goToStep(4); };
+  goNextStep();
 
-  document.getElementById('back-step3').onclick = () => { goToPreviousStep(3); };
-  document.getElementById('back-step4').onclick = () => { goToPreviousStep(4); };
+  let count = 1;
+  while (count <= 4) {
+    nextButtonEl(count).onclick = () => { goNextStep(); };
+    count = count + 1;
+  }
 
-  goToStep(1);
+  backButtonEl(3).onclick = () => { goToPreviousStep(); };
+  backButtonEl(4).onclick = () => { goToPreviousStep(); };
 }
 
-function goToStep(stepNum) {
-  if (stepNum === 1 || stepNum === 2) {
-    toggleDisplaySteps(stepNum, (stepNum - 1));
+
+function goNextStep() {
+  if (state.stepNumber <= 1) {
+    toggleDisplaySteps();
   } else {
-    validateStep(stepNum) && toggleDisplaySteps(stepNum, (stepNum - 1));
+    validateStep() && toggleDisplaySteps();
   }
 }
 
-function validateStep(stepNum) {
-  if (stepNum === 3) {
+function validateStep() {
+  if (state.stepNumber === 2) {
     if (state.customerBankAccount === 0 || state.customerSpendLimit === 0 ||
       isNaN(state.customerBankAccount) || isNaN(state.customerSpendLimit))
     {
@@ -43,7 +46,7 @@ function validateStep(stepNum) {
       return true;
     }
   }
-  if (stepNum === 4) {
+  if (state.stepNumber === 3) {
     if (state.phonePrice === 0 || state.accessoryPrice === 0 || state.bundleSize === 0) {
       alert('Please select one of each');
     } else {
@@ -53,21 +56,31 @@ function validateStep(stepNum) {
   }
 }
 
-function doneWithStepEl(stepNum) {
+function nextButtonEl(stepNum) {
   return document.getElementById(`done-step${stepNum}`);
 }
 
-function toggleDisplaySteps(showStepNum, hideStepNum) {
-  if (hideStepNum === 0) {
-    document.getElementById(`step${showStepNum}`).classList.add('active');
-  } else {
-    document.getElementById(`step${showStepNum}`).classList.add('active');
-    document.getElementById(`step${hideStepNum}`).classList.remove('active');
+function backButtonEl(stepNum) {
+  return document.getElementById(`back-step${stepNum}`);
+}
+
+function toggleDisplaySteps() {
+  state.stepNumber = state.stepNumber + 1;
+  document.getElementById(`step${state.stepNumber}`).classList.add('active');
+
+  if (state.stepNumber >= 2) {
+    const lastStep = state.stepNumber - 1;
+    document.getElementById(`step${state.stepNumber}`).classList.add('active');
+    document.getElementById(`step${lastStep}`).classList.remove('active');
   }
 }
 
-function goToPreviousStep(currentStep) {
-  toggleDisplaySteps((currentStep - 1), currentStep);
+function goToPreviousStep() {
+  const currentStep = state.stepNumber;
+  state.stepNumber = currentStep - 1;
+
+  document.getElementById(`step${currentStep}`).classList.remove('active');
+  document.getElementById(`step${state.stepNumber}`).classList.add('active');
 }
 
 document.getElementById('bank-account').addEventListener('change', (e) => {
