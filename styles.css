@@ -84,12 +84,36 @@ h2::after {
 
 .option-box p { margin: 0; }
 
+#bank-error,
+#spend-error,
+#phone-error,
+#accessory-error,
+#bundle-error {
+  margin: 0 0 10px;
+  display: none;
+  line-height: 1em;
+  color: red;
+}
+
+#bank-error.active,
+#spend-error.active,
+#phone-error.active,
+#accessory-error.active,
+#bundle-error.active {
+  display: block;
+}
+
 .option-box.button { margin: 0; }
 
 input {
   width: 70px;
   padding: 3px;
- }
+}
+
+input.error,
+select.error {
+  border-color: red;
+}
 
 input:focus,
 select:focus {

@@ -1,3 +1,4 @@
+// TODO setState and getState
 const TAX = 0.08;
 const state = {
   stepNumber: 0,
@@ -37,24 +38,85 @@ function goNextStep() {
 
 function validateStep() {
   if (state.stepNumber === 2) {
-    if (state.customerBankAccount === 0 || state.customerSpendLimit === 0 ||
-      isNaN(state.customerBankAccount) || isNaN(state.customerSpendLimit))
-    {
-      alert('Please fill out both inputs');
+    if (state.customerBankAccount === 0 || isNaN(state.customerBankAccount) ||
+        state.customerSpendLimit === 0 || isNaN(state.customerSpendLimit)) {
+      checkStepTwoErrors();
     } else {
+      removeStepTwoErrors();
       document.getElementById('top-bar').classList.add('active');
+
       return true;
     }
   }
   if (state.stepNumber === 3) {
     if (state.phonePrice === 0 || state.accessoryPrice === 0 || state.bundleSize === 0) {
-      alert('Please select one of each');
+      checkStepThreeErrors();
     } else {
+      removeStepThreeErrors();
       overUnderForSummary();
+
       return true;
     }
   }
 }
+
+function checkStepTwoErrors() {
+  if (state.customerBankAccount === 0 || isNaN(state.customerBankAccount)) {
+    document.getElementById('bank-account').classList.add('error');
+    document.getElementById('bank-error').classList.add('active');
+  } else if (state.customerBankAccount >= 1 ) {
+    document.getElementById('bank-account').classList.remove('error');
+    document.getElementById('bank-error').classList.remove('active');
+  }
+  if (state.customerSpendLimit === 0 || isNaN(state.customerSpendLimit)) {
+    document.getElementById('spend-limit').classList.add('error');
+    document.getElementById('spend-error').classList.add('active');
+  } else if (state.customerSpendLimit >= 1 ) {
+    document.getElementById('spend-limit').classList.remove('error');
+    document.getElementById('spend-error').classList.remove('active');
+  }
+}
+
+function removeStepTwoErrors() {
+  document.getElementById('bank-account').classList.remove('error');
+  document.getElementById('bank-error').classList.remove('active');
+  document.getElementById('spend-limit').classList.remove('error');
+  document.getElementById('spend-error').classList.remove('active');
+}
+
+function checkStepThreeErrors() {
+  if (state.phonePrice === 0) {
+    document.getElementById('phone-select').classList.add('error');
+    document.getElementById('phone-error').classList.add('active');
+  } else if (state.phonePrice >= 1 ) {
+    document.getElementById('phone-select').classList.remove('error');
+    document.getElementById('phone-error').classList.remove('active');
+  }
+  if (state.accessoryPrice === 0) {
+    document.getElementById('accessory-select').classList.add('error');
+    document.getElementById('accessory-error').classList.add('active');
+  } else if (state.accessoryPrice >= 1 ) {
+    document.getElementById('accessory-select').classList.remove('error');
+    document.getElementById('accessory-error').classList.remove('active');
+  }
+  if (state.bundleSize === 0) {
+    document.getElementById('bundle-select').classList.add('error');
+    document.getElementById('bundle-error').classList.add('active');
+  } else if (state.bundleSize >= 2 ) {
+    document.getElementById('bundle-select').classList.remove('error');
+    document.getElementById('bundle-error').classList.remove('active');
+  }
+}
+
+function removeStepThreeErrors() {
+  document.getElementById('phone-select').classList.remove('error');
+  document.getElementById('phone-error').classList.remove('active');
+  document.getElementById('accessory-select').classList.remove('error');
+  document.getElementById('accessory-error').classList.remove('active');
+  document.getElementById('bundle-select').classList.remove('error');
+  document.getElementById('bundle-error').classList.remove('active');
+}
+
 
 function nextButtonEl(stepNum) {
   return document.getElementById(`done-step${stepNum}`);

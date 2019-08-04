@@ -33,10 +33,12 @@
         <label for="bank-account">Estimate savings available:</label>
         <input id="bank-account" type="number">
       </div>
+      <p id="bank-error">Please input a proper number.</p>
       <div class="option-box">
         <label for="spend-limit">Enter desired spend limit:</label>
         <input id="spend-limit" type="number">
       </div>
+      <p id="spend-error">Please input a proper number.</p>
 
       <button id="done-step2" class="next">Next</button>
     </div>
@@ -56,6 +58,7 @@
             <option value="5">Nokia 3310</option>
         </select>
       </div>
+      <p id="phone-error">Please select a device.</p>
       <div class="option-box vertical">
         <label for="accessory-select">Choose your headphone bundle:</label>
         <select id="accessory-select">
@@ -65,6 +68,7 @@
             <option value="3">Walkman headphones</option>
         </select>
       </div>
+      <p id="accessory-error">Please select an accessory.</p>
       <div class="option-box vertical">
         <label for="bundle-select">Choose number of family members:</label>
         <select id="bundle-select">
@@ -76,6 +80,7 @@
             <option value="6">Six</option>
         </select>
       </div>
+      <p id="bundle-error">Please select the bundle size.</p>
       <div class="option-box button">
         <button id="back-step3" class="back">Back</button>
         <button id="done-step3" class="next">Next</button>
