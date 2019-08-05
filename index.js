@@ -20,7 +20,7 @@ function initialize() {
   let count = 1;
   while (count <= 4) {
     nextButtonEl(count).onclick = () => { goNextStep(); };
-    count = count + 1;
+    count += 1;
   }
 
   backButtonEl(3).onclick = () => { goToPreviousStep(); };
@@ -38,8 +38,8 @@ function goNextStep() {
 
 function validateStep() {
   if (state.stepNumber === 2) {
-    if (state.customerBankAccount === 0 || isNaN(state.customerBankAccount) ||
-        state.customerSpendLimit === 0 || isNaN(state.customerSpendLimit)) {
+    if (state.customerBankAccount === 0 || Number.isNaN(state.customerBankAccount)
+     || state.customerSpendLimit === 0 || Number.isNaN(state.customerSpendLimit)) {
       checkStepTwoErrors();
     } else {
       removeStepTwoErrors();
@@ -61,17 +61,18 @@ function validateStep() {
 }
 
 function checkStepTwoErrors() {
-  if (state.customerBankAccount === 0 || isNaN(state.customerBankAccount)) {
+  if (state.customerBankAccount === 0 || Number.isNaN(state.customerBankAccount)) {
     document.getElementById('bank-account').classList.add('error');
     document.getElementById('bank-error').classList.add('active');
-  } else if (state.customerBankAccount >= 1 ) {
+  } else if (state.customerBankAccount >= 1) {
     document.getElementById('bank-account').classList.remove('error');
     document.getElementById('bank-error').classList.remove('active');
   }
-  if (state.customerSpendLimit === 0 || isNaN(state.customerSpendLimit)) {
+  if (state.customerSpendLimit === 0 || Number.isNaN(state.customerSpendLimit)) {
     document.getElementById('spend-limit').classList.add('error');
     document.getElementById('spend-error').classList.add('active');
-  } else if (state.customerSpendLimit >= 1 ) {
+    document.getElementById('input-spend').innerHTML = '';
+  } else if (state.customerSpendLimit >= 1) {
     document.getElementById('spend-limit').classList.remove('error');
     document.getElementById('spend-error').classList.remove('active');
   }
@@ -88,21 +89,21 @@ function checkStepThreeErrors() {
   if (state.phonePrice === 0) {
     document.getElementById('phone-select').classList.add('error');
     document.getElementById('phone-error').classList.add('active');
-  } else if (state.phonePrice >= 1 ) {
+  } else if (state.phonePrice >= 1) {
     document.getElementById('phone-select').classList.remove('error');
     document.getElementById('phone-error').classList.remove('active');
   }
   if (state.accessoryPrice === 0) {
     document.getElementById('accessory-select').classList.add('error');
     document.getElementById('accessory-error').classList.add('active');
-  } else if (state.accessoryPrice >= 1 ) {
+  } else if (state.accessoryPrice >= 1) {
     document.getElementById('accessory-select').classList.remove('error');
     document.getElementById('accessory-error').classList.remove('active');
   }
   if (state.bundleSize === 0) {
     document.getElementById('bundle-select').classList.add('error');
     document.getElementById('bundle-error').classList.add('active');
-  } else if (state.bundleSize >= 2 ) {
+  } else if (state.bundleSize >= 2) {
     document.getElementById('bundle-select').classList.remove('error');
     document.getElementById('bundle-error').classList.remove('active');
   }
@@ -127,7 +128,7 @@ function backButtonEl(stepNum) {
 }
 
 function toggleDisplaySteps() {
-  state.stepNumber = state.stepNumber + 1;
+  state.stepNumber += 1;
   document.getElementById(`step${state.stepNumber}`).classList.add('active');
 
   if (state.stepNumber >= 2) {
@@ -147,14 +148,24 @@ function goToPreviousStep() {
 
 document.getElementById('bank-account').addEventListener('change', (e) => {
   state.customerBankAccount = parseInt(e.currentTarget.value, 10);
-  document.getElementById('input-balance').innerHTML = state.customerBankAccount;
+
+  if (Number.isNaN(state.customerBankAccount)) {
+    document.getElementById('input-balance').innerHTML = '';
+  } else {
+    document.getElementById('input-balance').innerHTML = state.customerBankAccount;
+  }
 
   showTotalSpentAndRemaining();
 });
 
 document.getElementById('spend-limit').addEventListener('change', (e) => {
   state.customerSpendLimit = parseInt(e.currentTarget.value, 10);
-  document.getElementById('input-spend').innerHTML = state.customerSpendLimit;
+
+  if (Number.isNaN(state.customerBankAccount)) {
+    document.getElementById('input-spend').innerHTML = '';
+  } else {
+    document.getElementById('input-spend').innerHTML = state.customerSpendLimit;
+  }
 
   showTotalSpentAndRemaining();
 });
@@ -220,4 +231,3 @@ function overUnderForSummary() {
     summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
   }
 }
-
