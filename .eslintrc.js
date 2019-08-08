@@ -24,5 +24,10 @@ module.exports = {
     "linebreak-style": ["error", "windows"],
     "prefer-destructuring": "off",
     "no-use-before-define": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/destructuring-assignment": "off",
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off",
   },
 };
