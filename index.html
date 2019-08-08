@@ -29,23 +29,27 @@
 
     <div class="component" id="step2">
       <h2>Planning Money</h2>
-      <div class="option-box">
-        <label for="bank-account">Estimate savings available:</label>
-        <input id="bank-account" type="number">
+      <div id="bank-box" class="option-box">
+        <div class="flex block">
+          <label for="bank-account">Estimate savings available:</label>
+          <input id="bank-account" type="number">
+        </div>
+        <p id="bank-error">Please input a proper number.</p>
       </div>
-      <p id="bank-error">Please input a proper number.</p>
-      <div class="option-box">
-        <label for="spend-limit">Enter desired spend limit:</label>
-        <input id="spend-limit" type="number">
+      <div id="spend-box" class="option-box">
+        <div class="flex block">
+          <label for="spend-limit">Enter desired spend limit:</label>
+          <input id="spend-limit" type="number">
+        </div>
+        <p id="spend-error">Please input a proper number.</p>
       </div>
-      <p id="spend-error">Please input a proper number.</p>
 
       <button id="done-step2" class="next">Next</button>
     </div>
 
     <div class="component" id="step3">
       <h2>Bundle Selections</h2>
-      <div class="option-box vertical">
+      <div id="phone-box" class="option-box">
         <label for="phone-select">Choose your phone bundle: </label>
         <select id="phone-select">
             <option value="0">-Select a phones-</option>
@@ -57,9 +61,9 @@
             <option value="1700">Samsung S10+</option>
             <option value="5">Nokia 3310</option>
         </select>
+        <p id="phone-error">Please select a device.</p>
       </div>
-      <p id="phone-error">Please select a device.</p>
-      <div class="option-box vertical">
+      <div id="accessory-box" class="option-box">
         <label for="accessory-select">Choose your headphone bundle:</label>
         <select id="accessory-select">
             <option value="0">-Select your accessories</option>
@@ -67,9 +71,9 @@
             <option value="200">iPhone Earpods</option>
             <option value="3">Walkman headphones</option>
         </select>
+        <p id="accessory-error">Please select an accessory.</p>
       </div>
-      <p id="accessory-error">Please select an accessory.</p>
-      <div class="option-box vertical">
+      <div id="bundle-box" class="option-box">
         <label for="bundle-select">Choose number of family members:</label>
         <select id="bundle-select">
             <option value="0">-Family Size-</option>
@@ -79,9 +83,9 @@
             <option value="5">Five</option>
             <option value="6">Six</option>
         </select>
+        <p id="bundle-error">Please select the bundle size.</p>
       </div>
-      <p id="bundle-error">Please select the bundle size.</p>
-      <div class="option-box button">
+      <div class="option-box flex button">
         <button id="back-step3" class="back">Back</button>
         <button id="done-step3" class="next">Next</button>
       </div>
@@ -89,7 +93,7 @@
 
     <div class="component" id="step4">
       <h2>Selection Summary</h2>
-      <div class="option-box vertical">
+      <div class="option-box block">
           <p id="summary-spent-under">Great job! You are <span class='under'>UNDER</span></p>
           <p id="summary-spent-over">Oh noes, you are <span class='over'>OVER</span></p>
           <p>your spend limit by <span id="summary-spent-number"></span>!</p>
@@ -116,7 +120,7 @@
         </ul>
         <p>You will have <span id="summary-bank" class="bold"></span> remaining.</p>
       </div>
-      <div class="option-box button">
+      <div class="option-box flex button">
         <button id="back-step4" class="back">Back</button>
         <button id="done-step4" class="next cart">Add to Cart</button>
       </div>

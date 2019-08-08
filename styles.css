@@ -64,6 +64,10 @@ h2::after {
 
 /* COMPONENTS */
 
+.block { display: block; }
+
+.flex { display: flex; }
+
 .component {
   margin: 10px;
   padding: 20px 15px;
@@ -76,11 +80,12 @@ h2::after {
 
 .option-box {
   margin: 0 0 10px;
-  display: flex;
-  justify-content: space-between;
 }
 
-.option-box.vertical { display: block; }
+.option-box.flex,
+.option-box .flex {
+  justify-content: space-between;
+}
 
 .option-box p { margin: 0; }
 
@@ -89,17 +94,17 @@ h2::after {
 #phone-error,
 #accessory-error,
 #bundle-error {
-  margin: 0 0 10px;
+  margin: 5px 0 0;
   display: none;
   line-height: 1em;
   color: red;
 }
 
-#bank-error.active,
-#spend-error.active,
-#phone-error.active,
-#accessory-error.active,
-#bundle-error.active {
+#bank-box.error #bank-error,
+#spend-box.error #spend-error,
+#phone-box.error #phone-error,
+#accessory-box.error #accessory-error,
+#bundle-box.error #bundle-error{
   display: block;
 }
 
@@ -110,8 +115,11 @@ input {
   padding: 3px;
 }
 
-input.error,
-select.error {
+#bank-box.error input,
+#spend-box.error input,
+#phone-box.error select,
+#accessory-box.error select,
+#bundle-box.error select {
   border-color: red;
 }
 

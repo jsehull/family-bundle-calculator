@@ -27,7 +27,6 @@ function initialize() {
   backButtonEl(4).onclick = () => { goToPreviousStep(); };
 }
 
-
 function goNextStep() {
   if (state.stepNumber <= 1) {
     toggleDisplaySteps();
@@ -62,60 +61,44 @@ function validateStep() {
 
 function checkStepTwoErrors() {
   if (state.customerBankAccount === 0 || Number.isNaN(state.customerBankAccount)) {
-    document.getElementById('bank-account').classList.add('error');
-    document.getElementById('bank-error').classList.add('active');
+    document.getElementById('bank-box').classList.add('error');
   } else if (state.customerBankAccount >= 1) {
-    document.getElementById('bank-account').classList.remove('error');
-    document.getElementById('bank-error').classList.remove('active');
+    document.getElementById('bank-box').classList.remove('error');
   }
   if (state.customerSpendLimit === 0 || Number.isNaN(state.customerSpendLimit)) {
-    document.getElementById('spend-limit').classList.add('error');
-    document.getElementById('spend-error').classList.add('active');
-    document.getElementById('input-spend').innerHTML = '';
+    document.getElementById('spend-box').classList.add('error');
   } else if (state.customerSpendLimit >= 1) {
-    document.getElementById('spend-limit').classList.remove('error');
-    document.getElementById('spend-error').classList.remove('active');
+    document.getElementById('spend-box').classList.remove('error');
   }
 }
 
 function removeStepTwoErrors() {
-  document.getElementById('bank-account').classList.remove('error');
-  document.getElementById('bank-error').classList.remove('active');
-  document.getElementById('spend-limit').classList.remove('error');
-  document.getElementById('spend-error').classList.remove('active');
+  document.getElementById('bank-box').classList.remove('error');
+  document.getElementById('spend-box').classList.remove('error');
 }
 
 function checkStepThreeErrors() {
   if (state.phonePrice === 0) {
-    document.getElementById('phone-select').classList.add('error');
-    document.getElementById('phone-error').classList.add('active');
+    document.getElementById('phone-box').classList.add('error');
   } else if (state.phonePrice >= 1) {
-    document.getElementById('phone-select').classList.remove('error');
-    document.getElementById('phone-error').classList.remove('active');
+    document.getElementById('phone-box').classList.remove('error');
   }
   if (state.accessoryPrice === 0) {
-    document.getElementById('accessory-select').classList.add('error');
-    document.getElementById('accessory-error').classList.add('active');
+    document.getElementById('accessory-box').classList.add('error');
   } else if (state.accessoryPrice >= 1) {
-    document.getElementById('accessory-select').classList.remove('error');
-    document.getElementById('accessory-error').classList.remove('active');
+    document.getElementById('accessory-box').classList.remove('error');
   }
   if (state.bundleSize === 0) {
-    document.getElementById('bundle-select').classList.add('error');
-    document.getElementById('bundle-error').classList.add('active');
+    document.getElementById('bundle-box').classList.add('error');
   } else if (state.bundleSize >= 2) {
-    document.getElementById('bundle-select').classList.remove('error');
-    document.getElementById('bundle-error').classList.remove('active');
+    document.getElementById('bundle-box').classList.remove('error');
   }
 }
 
 function removeStepThreeErrors() {
-  document.getElementById('phone-select').classList.remove('error');
-  document.getElementById('phone-error').classList.remove('active');
-  document.getElementById('accessory-select').classList.remove('error');
-  document.getElementById('accessory-error').classList.remove('active');
-  document.getElementById('bundle-select').classList.remove('error');
-  document.getElementById('bundle-error').classList.remove('active');
+  document.getElementById('phone-box').classList.remove('error');
+  document.getElementById('accessory-box').classList.remove('error');
+  document.getElementById('bundle-box').classList.remove('error');
 }
 
 
