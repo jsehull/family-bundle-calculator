@@ -1,4 +1,3 @@
-// TODO setState and getState
 const TAX = 0.08;
 const state = {
   stepNumber: 0,
@@ -37,8 +36,7 @@ function goNextStep() {
 
 function validateStep() {
   if (state.stepNumber === 2) {
-    if (state.customerBankAccount === 0 || Number.isNaN(state.customerBankAccount)
-     || state.customerSpendLimit === 0 || Number.isNaN(state.customerSpendLimit)) {
+    if (!state.customerBankAccount || !state.customerSpendLimit === 0) {
       checkStepTwoErrors();
     } else {
       removeStepTwoErrors();
@@ -48,7 +46,7 @@ function validateStep() {
     }
   }
   if (state.stepNumber === 3) {
-    if (state.phonePrice === 0 || state.accessoryPrice === 0 || state.bundleSize === 0) {
+    if (!state.phonePrice || !state.accessoryPrice || !state.bundleSize) {
       checkStepThreeErrors();
     } else {
       removeStepThreeErrors();
@@ -60,12 +58,12 @@ function validateStep() {
 }
 
 function checkStepTwoErrors() {
-  if (state.customerBankAccount === 0 || Number.isNaN(state.customerBankAccount)) {
+  if (!state.customerBankAccount) {
     document.getElementById('bank-box').classList.add('error');
   } else if (state.customerBankAccount >= 1) {
     document.getElementById('bank-box').classList.remove('error');
   }
-  if (state.customerSpendLimit === 0 || Number.isNaN(state.customerSpendLimit)) {
+  if (!state.customerSpendLimit) {
     document.getElementById('spend-box').classList.add('error');
   } else if (state.customerSpendLimit >= 1) {
     document.getElementById('spend-box').classList.remove('error');
@@ -132,7 +130,7 @@ function goToPreviousStep() {
 document.getElementById('bank-account').addEventListener('change', (e) => {
   state.customerBankAccount = parseInt(e.currentTarget.value, 10);
 
-  if (Number.isNaN(state.customerBankAccount)) {
+  if (!state.customerBankAccount) {
     document.getElementById('input-balance').innerHTML = '';
   } else {
     document.getElementById('input-balance').innerHTML = state.customerBankAccount;
@@ -144,7 +142,7 @@ document.getElementById('bank-account').addEventListener('change', (e) => {
 document.getElementById('spend-limit').addEventListener('change', (e) => {
   state.customerSpendLimit = parseInt(e.currentTarget.value, 10);
 
-  if (Number.isNaN(state.customerBankAccount)) {
+  if (!state.customerBankAccount) {
     document.getElementById('input-spend').innerHTML = '';
   } else {
     document.getElementById('input-spend').innerHTML = state.customerSpendLimit;
