@@ -16,6 +16,10 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.css$/i,
+        loader: ['style-loader', 'css-loader'],
+      },
     ],
   },
   devServer: {
