@@ -36,7 +36,7 @@ function goNextStep() {
 
 function validateStep() {
   if (state.stepNumber === 2) {
-    if (!state.customerBankAccount || !state.customerSpendLimit === 0) {
+    if (!state.customerBankAccount || !state.customerSpendLimit) {
       checkStepTwoErrors();
     } else {
       removeStepTwoErrors();
