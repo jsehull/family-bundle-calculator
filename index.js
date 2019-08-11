@@ -1,79 +1,152 @@
 const TAX = 0.08;
 const state = {
+  stepNumber: 0,
   customerBankAccount: 0,
   customerSpendLimit: 0,
-  phoneName: '',
-  phonePrice: '',
-  accessoryName: '',
-  accessoryPrice: '',
-  bundleSize: '',
+  phoneName: null,
+  phonePrice: 0,
+  accessoryName: null,
+  accessoryPrice: 0,
+  bundleSize: 0,
   totalSpent: 0,
 };
 
 initialize();
 
 function initialize() {
-  doneWithStepEl(1).onclick = () => { goToStep(2); };
-  doneWithStepEl(2).onclick = () => { goToStep(3); };
-  doneWithStepEl(3).onclick = () => { goToStep(4); };
+  goNextStep();
 
-  document.getElementById('back-step3').onclick = () => { goToPreviousStep(3); };
-  document.getElementById('back-step4').onclick = () => { goToPreviousStep(4); };
+  let count = 1;
+  while (count <= 4) {
+    nextButtonEl(count).onclick = () => { goNextStep(); };
+    count += 1;
+  }
 
-  goToStep(1);
+  backButtonEl(3).onclick = () => { goToPreviousStep(); };
+  backButtonEl(4).onclick = () => { goToPreviousStep(); };
 }
 
-function goToStep(stepNum) {
-  if (stepNum === 1 || stepNum === 2) {
-    toggleDisplaySteps(stepNum, (stepNum - 1));
-  } else if (stepNum === 3) {
-    // TODO - set validation for 0 or NaN
-    if (state.customerBankAccount === '' || state.customerSpendLimit === '') {
-      alert('Please fill out both inputs');
+function goNextStep() {
+  if (state.stepNumber <= 1) {
+    toggleDisplaySteps();
+  } else {
+    validateStep() && toggleDisplaySteps();
+  }
+}
+
+function validateStep() {
+  if (state.stepNumber === 2) {
+    if (!state.customerBankAccount || !state.customerSpendLimit) {
+      checkStepTwoErrors();
     } else {
+      removeStepTwoErrors();
       document.getElementById('top-bar').classList.add('active');
-      toggleDisplaySteps(stepNum, (stepNum - 1));
+
+      return true;
     }
-  } else if (stepNum === 4) {
-    if (state.phonePrice === '' || state.accessoryPrice === '' || state.bundleSize === '') {
-      // TODO - if '' or NaN (has issue if changed back to default ')')
-      alert('Please select one of each');
+  }
+  if (state.stepNumber === 3) {
+    if (!state.phonePrice || !state.accessoryPrice || !state.bundleSize) {
+      checkStepThreeErrors();
     } else {
+      removeStepThreeErrors();
       overUnderForSummary();
-      toggleDisplaySteps(stepNum, (stepNum - 1));
+
+      return true;
     }
   }
 }
 
-function doneWithStepEl(stepNum) {
+function checkStepTwoErrors() {
+  if (!state.customerBankAccount) {
+    document.getElementById('bank-box').classList.add('error');
+  } else if (state.customerBankAccount >= 1) {
+    document.getElementById('bank-box').classList.remove('error');
+  }
+  if (!state.customerSpendLimit) {
+    document.getElementById('spend-box').classList.add('error');
+  } else if (state.customerSpendLimit >= 1) {
+    document.getElementById('spend-box').classList.remove('error');
+  }
+}
+
+function removeStepTwoErrors() {
+  document.getElementById('bank-box').classList.remove('error');
+  document.getElementById('spend-box').classList.remove('error');
+}
+
+function checkStepThreeErrors() {
+  if (state.phonePrice === 0) {
+    document.getElementById('phone-box').classList.add('error');
+  } else if (state.phonePrice >= 1) {
+    document.getElementById('phone-box').classList.remove('error');
+  }
+  if (state.accessoryPrice === 0) {
+    document.getElementById('accessory-box').classList.add('error');
+  } else if (state.accessoryPrice >= 1) {
+    document.getElementById('accessory-box').classList.remove('error');
+  }
+  if (state.bundleSize === 0) {
+    document.getElementById('bundle-box').classList.add('error');
+  } else if (state.bundleSize >= 2) {
+    document.getElementById('bundle-box').classList.remove('error');
+  }
+}
+
+function removeStepThreeErrors() {
+  document.getElementById('phone-box').classList.remove('error');
+  document.getElementById('accessory-box').classList.remove('error');
+  document.getElementById('bundle-box').classList.remove('error');
+}
+
+
+function nextButtonEl(stepNum) {
   return document.getElementById(`done-step${stepNum}`);
 }
 
-function toggleDisplaySteps(showStepNum, hideStepNum) {
-  if (hideStepNum === 0) {
-    document.getElementById(`step${showStepNum}`).classList.add('active');
-
-    return;
-  }
-
-  document.getElementById(`step${showStepNum}`).classList.add('active');
-  document.getElementById(`step${hideStepNum}`).classList.remove('active');
+function backButtonEl(stepNum) {
+  return document.getElementById(`back-step${stepNum}`);
 }
 
-function goToPreviousStep(currentStep) {
-  toggleDisplaySteps((currentStep - 1), currentStep);
+function toggleDisplaySteps() {
+  state.stepNumber += 1;
+  document.getElementById(`step${state.stepNumber}`).classList.add('active');
+
+  if (state.stepNumber >= 2) {
+    const lastStep = state.stepNumber - 1;
+    document.getElementById(`step${state.stepNumber}`).classList.add('active');
+    document.getElementById(`step${lastStep}`).classList.remove('active');
+  }
+}
+
+function goToPreviousStep() {
+  const currentStep = state.stepNumber;
+  state.stepNumber = currentStep - 1;
+
+  document.getElementById(`step${currentStep}`).classList.remove('active');
+  document.getElementById(`step${state.stepNumber}`).classList.add('active');
 }
 
 document.getElementById('bank-account').addEventListener('change', (e) => {
   state.customerBankAccount = parseInt(e.currentTarget.value, 10);
-  document.getElementById('input-balance').innerHTML = state.customerBankAccount;
+
+  if (!state.customerBankAccount) {
+    document.getElementById('input-balance').innerHTML = '';
+  } else {
+    document.getElementById('input-balance').innerHTML = state.customerBankAccount;
+  }
 
   showTotalSpentAndRemaining();
 });
 
 document.getElementById('spend-limit').addEventListener('change', (e) => {
   state.customerSpendLimit = parseInt(e.currentTarget.value, 10);
-  document.getElementById('input-spend').innerHTML = state.customerSpendLimit;
+
+  if (!state.customerBankAccount) {
+    document.getElementById('input-spend').innerHTML = '';
+  } else {
+    document.getElementById('input-spend').innerHTML = state.customerSpendLimit;
+  }
 
   showTotalSpentAndRemaining();
 });
@@ -118,27 +191,24 @@ function showTotalSpentAndRemaining() {
     + ((state.phonePrice + state.accessoryPrice) * TAX);
   state.totalSpent = state.bundleSize * costPerBundle;
 
-  document.getElementById('summary-total-spent').innerHTML = `$${state.totalSpent.toFixed(2)}`;
-  document.getElementById('summary-bank').innerHTML = `$${(state.customerBankAccount - state.totalSpent).toFixed(2)}`;
+  document.getElementById('summary-total-spent').innerHTML =
+    `$${state.totalSpent.toFixed(2)}`;
+  document.getElementById('summary-bank').innerHTML =
+    `$${(state.customerBankAccount - state.totalSpent).toFixed(2)}`;
 }
 
-// TODO - still need, but move to HTML too
 function overUnderForSummary() {
-  const summarySpendTag = document.getElementById('summary-spent');
-  if (state.totalSpent < state.customerSpendLimit) {
-    summarySpendTag.innerHTML = `
-      <p>Great job! You are</p>
-      <p class='under'>UNDER</p>
-      <p>your spend limit by $${(state.customerSpendLimit - state.totalSpent).toFixed(2)}!</p>
-    `;
-  } else if (state.totalSpent === state.customerSpendLimit) {
-    // TODO - need to recheck validation since multiple refactors...
-    summarySpendTag.innerHTML = 'Nice planning, you have spent all of the money you set aside.';
-  } else {
-    summarySpendTag.innerHTML = `
-      <p>Oh noes, you are</p>
-      <p class='over'>OVER</p>
-      <p>your spend limit by $${(state.totalSpent - state.customerSpendLimit).toFixed(2)}!</p>
-    `;
+  const summaryUnderEl = document.getElementById('summary-spent-under');
+  const summaryOverEl = document.getElementById('summary-spent-over');
+  const summaryNumberEl = document.getElementById('summary-spent-number');
+
+  if (state.totalSpent <= state.customerSpendLimit) {
+    summaryOverEl.classList.remove('active');
+    summaryUnderEl.classList.add('active');
+    summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
+  } else if (state.totalSpent > state.customerSpendLimit) {
+    summaryUnderEl.classList.remove('active');
+    summaryOverEl.classList.add('active');
+    summaryNumberEl.innerHTML = (state.customerSpendLimit - state.totalSpent).toFixed(2);
   }
 }
